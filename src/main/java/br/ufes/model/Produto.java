@@ -6,6 +6,7 @@ public final class Produto {
     private double valorUnitario;
     private double valorUltimaCompra;
     private double quantidade;
+    private String tipo;
 
     public Produto(String nome, double valorUnitario, double quantidade) {
         this.nome = nome;
@@ -46,6 +47,14 @@ public final class Produto {
         }
         this.valorUltimaCompra = this.valorUnitario;
         this.valorUnitario = valorUnitario;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override
