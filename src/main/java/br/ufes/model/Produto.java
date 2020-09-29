@@ -5,17 +5,17 @@ public final class Produto {
     private String nome;
     private double valorUnitario;
     private double valorUltimaCompra;
-    private double quantidade;
     private String tipo;
+    private Estoque estoque;
 
     public Produto(String nome, double valorUnitario, double quantidade) {
         this.nome = nome;
         setValorUnitario(valorUnitario);
-        this.quantidade = quantidade;
+        this.estoque = new Estoque(quantidade);
     }
 
     public boolean estoqueDisponivel(double quantidadeNecessaria) {
-        return this.quantidade >= quantidadeNecessaria;
+        return this.getEstoque().getQuantidade() >= quantidadeNecessaria;
     }
 
     public String getNome() {
@@ -31,7 +31,7 @@ public final class Produto {
     }
 
     public double getQuantidade() {
-        return quantidade;
+        return this.getEstoque().getQuantidade();
     }
 
     public void setNome(String nome) {
@@ -57,12 +57,16 @@ public final class Produto {
         this.tipo = tipo;
     }
 
+    public Estoque getEstoque() {
+        return estoque;
+    }
+
     @Override
     public String toString() {
         return "Produto: " + nome
                 + ", valor unitario: R$" + valorUnitario
                 + ", valor da ultima compra: R$" + valorUltimaCompra
-                + ", quantidade em estoque: " + quantidade;
+                + ", quantidade em estoque: " + this.getEstoque().getQuantidade();
     }
 
 }
