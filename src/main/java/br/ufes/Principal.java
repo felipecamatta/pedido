@@ -1,7 +1,7 @@
 package br.ufes;
 
 import br.ufes.model.Cliente;
-import br.ufes.model.Pedido;
+import br.ufes.model.CarrinhoDeCompra;
 import br.ufes.model.Produto;
 import java.time.LocalDate;
 
@@ -19,7 +19,7 @@ public class Principal {
 
             Produto produto1 = new Produto("Caneta", 3.50, 8);
 
-            Pedido pedido1 = new Pedido(cliente1,
+            CarrinhoDeCompra pedido1 = new CarrinhoDeCompra(cliente1,
                     produto1, 5,
                     LocalDate.now()
             );
