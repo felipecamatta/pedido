@@ -4,7 +4,7 @@ public class TipoProduto {
     public String tipo;
 
     public TipoProduto(double percDesconto, String tipo) {
-        this.percDesconto = percDesconto;
+        this.setPercDesconto(percDesconto);
         this.tipo = tipo;
     }
 
@@ -14,6 +14,9 @@ public class TipoProduto {
     }
 
     public void setPercDesconto(double percDesconto) {
+        if(percDesconto >= 1){
+            throw new RuntimeException("Informe um valor de desconto válido");
+        }
         this.percDesconto = percDesconto;
     }
 

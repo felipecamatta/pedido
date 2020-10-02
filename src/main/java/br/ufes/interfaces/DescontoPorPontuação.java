@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufes.model;
+package br.ufes.interfaces;
 
+import br.ufes.model.CarrinhoDeCompra;
 import java.time.Month;
 
 /**

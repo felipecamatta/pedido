@@ -49,6 +49,10 @@ public final class CarrinhoDeCompra {
         }
         return itemEncontrado;
     }
+    
+    public void quantidadeProduto(Item i, int quantidade){
+        this.getItemPorNome(i.getProduto().getNome()).get().setQuantidade(quantidade);
+    }
 
     private void calcularValor() {
         valor = 0;
@@ -67,11 +71,11 @@ public final class CarrinhoDeCompra {
         this.valorAPagar = valor - valorDesconto;
     }
 
-    public void removerItem(String nomeProduto) {
+    public void removerItem(Item item) {
 
-        Optional<Item> produtoEncontrado = getItemPorNome(nomeProduto);
+        Optional<Item> produtoEncontrado = getItemPorNome(item.getProduto().getNome());
         if (!produtoEncontrado.isPresent()) {
-            throw new RuntimeException("Item " + nomeProduto + " não encontrado");
+            throw new RuntimeException("Item " + item.getProduto().getNome() + " não encontrado");
         }
 
         itens.remove(produtoEncontrado.get());

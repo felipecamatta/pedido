@@ -1,4 +1,6 @@
-package br.ufes.model;
+package br.ufes.interfaces;
+import br.ufes.model.CarrinhoDeCompra;
+import br.ufes.model.Item;
 import java.time.Month;
 
 public class DescontoPorTipoProduto implements IPoliticaDeDesconto{

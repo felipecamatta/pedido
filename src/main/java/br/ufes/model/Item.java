@@ -42,6 +42,15 @@ public final class Item {
         return produto;
     }
 
+    public void setQuantidade(double quantidade) {
+        if(quantidade < 0){
+            throw new RuntimeException("Quantidade inválida! Somente valores positivos");
+        }
+        this.quantidade = quantidade;
+    }
+    
+    
+
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.00");

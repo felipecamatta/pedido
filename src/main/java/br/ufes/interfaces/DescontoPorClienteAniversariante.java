@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufes.model;
+package br.ufes.interfaces;
 
+import br.ufes.model.CarrinhoDeCompra;
 import java.time.Month;
 
 /**
@@ -15,8 +16,13 @@ public class DescontoPorClienteAniversariante implements IPoliticaDeDesconto{
 
     @Override
     public double calcularDesconto(CarrinhoDeCompra carrinho) {
-        if(carrinho.getCliente().getDataNascimento().withYear(carrinho.getData().getYear()).getDayOfYear() == carrinho.getData().getDayOfYear()){
-            return carrinho.getValor()*0.05;
+        
+        try{
+            if(carrinho.getCliente().getDataNascimento().withYear(carrinho.getData().getYear()).getDayOfYear() == carrinho.getData().getDayOfYear()){
+                return carrinho.getValor()*0.05;
+            }
+        }catch(Exception e){
+            throw e;
         }
         
         return 0;
