@@ -5,6 +5,8 @@
  */
 package br.ufes.model;
 
+import br.ufes.enumeracoes.UfEnum;
+
 /**
  *
  * @author gabriel
@@ -17,14 +19,16 @@ public class Endereco {
     private String bairro;
     private String cidade;
     private int numero;
+    private UfEnum uf;
 
-    public Endereco(String logradouro, String complemento, String cep, String bairro, String cidade, int numero) {
+    public Endereco(String logradouro, String complemento, String cep, String bairro, String cidade, int numero, UfEnum uf) {
         this.logradouro = logradouro;
         this.complemento = complemento;
         this.cep = cep;
         this.bairro = bairro;
         this.cidade = cidade;
         this.numero = numero;
+        this.uf = uf;
     }
     
 
