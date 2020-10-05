@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufes.model;
 
+import br.ufes.enumeracoes.SituacaoPedido;
 import br.ufes.interfaces.IPoliticaDeDesconto;
 import java.time.LocalDate;
 
@@ -22,6 +18,7 @@ public class Pedido {
     private CarrinhoDeCompra carrinho;
     private NotaFiscal notaFiscal;
     private IPoliticaDeDesconto politicaDeDesconto;
+    private SituacaoPedido situacao;
 
     public Pedido(long codigo, LocalDate data, double valorTotal, LocalDate dataValidade, CarrinhoDeCompra carrinho) {
         this.codigo = codigo;
@@ -29,6 +26,7 @@ public class Pedido {
         this.valorTotal = valorTotal;
         this.dataValidade = dataValidade;
         this.carrinho = carrinho;
+        this.situacao = SituacaoPedido.PENDENTE;
     }
     
     
@@ -99,6 +97,13 @@ public class Pedido {
     public void setNotaFiscal(NotaFiscal notaFiscal) {
         this.notaFiscal = notaFiscal;
     }
-   
+
+    public SituacaoPedido getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(SituacaoPedido situacao) {
+        this.situacao = situacao;
+    }
     
 }
