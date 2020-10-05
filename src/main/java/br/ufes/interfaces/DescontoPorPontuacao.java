@@ -12,9 +12,9 @@ import java.time.Month;
  *
  * @author gabriel
  */
-public class DescontoPorPontuação implements IPoliticaDeDesconto{
+public class DescontoPorPontuacao implements IPoliticaDeDesconto {
     
-    public final byte pontuacao = 30; // coloquei pontuação 30 apenas como exemplo
+    public final double pontuacao = 30; // coloquei pontuação 30 apenas como exemplo
 
     @Override
     public double calcularDesconto(CarrinhoDeCompra carrinho) {

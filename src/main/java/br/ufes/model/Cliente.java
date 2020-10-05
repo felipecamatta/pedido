@@ -8,7 +8,7 @@ public final class Cliente {
     private final String CNPJOuCPF;
     private Endereco endereco;
     private LocalDate dataNascimento;
-    private byte pontuacao;
+    private double pontuacao;
 
     public Cliente(String nome, String CNPJOuCPF, Endereco endereco, LocalDate dataNascimento, byte pontuacao) {
         this.nome = nome;
@@ -22,7 +22,7 @@ public final class Cliente {
         this.nome = nome;
         this.CNPJOuCPF = codigo;
     }
-
+    
     public String getNome() {
         return nome;
     }
@@ -47,11 +47,11 @@ public final class Cliente {
         this.dataNascimento = dataNascimento;
     }
 
-    public byte getPontuacao() {
+    public double getPontuacao() {
         return pontuacao;
     }
 
-    public void setPontuacao(byte pontuacao) {
+    public void setPontuacao(double pontuacao) {
         this.pontuacao = pontuacao;
     }
     
