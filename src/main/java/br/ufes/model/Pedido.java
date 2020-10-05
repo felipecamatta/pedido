@@ -29,7 +29,6 @@ public class Pedido {
         this.situacao = SituacaoPedido.PENDENTE;
     }
     
-    
     public void removerItem(Item item){
         carrinho.removerItem(item);
     }
@@ -39,6 +38,21 @@ public class Pedido {
             this.removerItem(item);
         }else if(quantidade > 0){
             this.carrinho.quantidadeProduto(item, quantidade);
+        }
+    }
+    
+    public void concluir(Pedido pedido) {
+        if(LocalDate.now().isAfter(pedido.getDataValidade())) {
+            pedido.setSituacao(SituacaoPedido.VENCIDO);
+            throw new RuntimeException("Não foi possível concluir o pedido pois ele expirou");
+        }
+        
+        removerProdutosDoPedidoDoEstoque(pedido);
+    }
+    
+    private void removerProdutosDoPedidoDoEstoque(Pedido pedido) {
+        for(Item itemPedido : pedido.getCarrinho().getItens()) {
+            itemPedido.getProduto().getEstoque().diminuirQuantidade(itemPedido.getQuantidade());
         }
     }
 
