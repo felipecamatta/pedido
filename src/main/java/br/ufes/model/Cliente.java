@@ -23,6 +23,19 @@ public final class Cliente {
         this.CNPJOuCPF = codigo;
     }
     
+    @Override
+    public String toString() {
+        return "Cliente: " + nome + ", CNPJ/CPF = " + CNPJOuCPF;
+    }
+    
+    public double incrementarPontuacao(double valorParaIncrementar) {
+        if(valorParaIncrementar > 0) {
+            pontuacao += valorParaIncrementar;
+        }
+        
+        return pontuacao;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -53,11 +66,6 @@ public final class Cliente {
 
     public void setPontuacao(double pontuacao) {
         this.pontuacao = pontuacao;
-    }
-    
-    @Override
-    public String toString() {
-        return "Cliente: " + nome + ", CNPJ/CPF = " + CNPJOuCPF;
     }
 
 }
