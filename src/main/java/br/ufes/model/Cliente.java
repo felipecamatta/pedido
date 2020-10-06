@@ -17,25 +17,25 @@ public final class Cliente {
         this.dataNascimento = dataNascimento;
         this.pontuacao = pontuacao;
     }
-    
+
     public Cliente(String nome, String codigo) {
         this.nome = nome;
         this.CNPJOuCPF = codigo;
     }
-    
+
     @Override
     public String toString() {
         return "Cliente: " + nome + ", CNPJ/CPF = " + CNPJOuCPF;
     }
-    
+
     public double incrementarPontuacao(double valorParaIncrementar) {
-        if(valorParaIncrementar > 0) {
+        if (valorParaIncrementar > 0) {
             pontuacao += valorParaIncrementar;
         }
-        
+
         return pontuacao;
     }
-    
+
     public String getNome() {
         return nome;
     }

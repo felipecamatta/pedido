@@ -1,13 +1,16 @@
-package br.ufes.model;
+package br.ufes.interfaces.implementacao;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
+//import com.itextpdf.text.Document;
+import br.ufes.interfaces.IGeradorArquivo;
 
-public class GerarArquivoPDF {
-
-    public void gerarArquivo(Pedido pedido) {
+//import com.itextpdf.text.DocumentException;
+//import com.itextpdf.text.Paragraph;
+//import com.itextpdf.text.pdf.PdfWriter;
+//import java.io.FileNotFoundException;
+//import java.io.FileOutputStream;
+public class GerarArquivoPDF implements IGeradorArquivo {
+    // TODO: Realizar gerador de pdf
+    /*public void gerarArquivo(Pedido pedido) {
 
         Document document = new Document();
 
@@ -28,5 +31,5 @@ public class GerarArquivoPDF {
             System.out.println("Error:" + ex);
         }
 
-    }
+    }*/
 }
