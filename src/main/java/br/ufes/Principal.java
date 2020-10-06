@@ -6,10 +6,6 @@ import br.ufes.model.Produto;
 import br.ufes.model.TipoProduto;
 import java.time.LocalDate;
 
-/**
- *
- * @author Clayton, adaptado da solução de Pedro Henrique Robadel
- */
 public class Principal {
 
     public static void main(String[] args) {

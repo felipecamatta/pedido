@@ -1,23 +1,23 @@
 package br.ufes.model;
 
+import br.ufes.interfaces.IFormaPagamento;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public final class CarrinhoDeCompra {
 
-    protected Cliente cliente;
-    protected double valor;
-    protected final double desconto = 0.05;
-    protected double valorDesconto;
-    protected double valorAPagar;
-    protected final ArrayList<Item> itens = new ArrayList<>();
-    protected final LocalDate data;
-    protected final LocalDate dataVencimento;
+    private Cliente cliente;
+    private double valor;
+    private final double desconto = 0.05;
+    private double valorDesconto;
+    private double valorAPagar;
+    private ArrayList<Item> itens;
+    private final LocalDate data;
+    private final LocalDate dataVencimento;
 
     public CarrinhoDeCompra(Cliente cliente, Produto produto, double quantidade, LocalDate data) {
         if (cliente == null) {
@@ -27,37 +27,46 @@ public final class CarrinhoDeCompra {
         this.data = data;
         this.dataVencimento = data.plusMonths(1);
         this.addItem(produto, quantidade);
+        this.itens = new ArrayList<Item>();
     }
 
     public final void addItem(Produto produto, double quantidade) {
         if (quantidade <= 0) {
             throw new RuntimeException("Informe uma quantidade válida!");
         }
-        if (this.getItemPorNome(produto.getNome()).isPresent()) {
+        if (this.getItemPorNomeProduto(produto.getNome()) != null) {
             throw new RuntimeException("Produto já existe! Remova-o ou altere a quantidade");
         }
         itens.add(new Item(produto, quantidade));
         calcularValor();
     }
 
-    protected Optional<Item> getItemPorNome(String nomeProduto) {
-        Optional<Item> itemEncontrado = Optional.empty();
+    public void removerItem(Produto produto) {
+        Item produtoEncontrado = getItemPorNomeProduto(produto.getNome());
+        if (produtoEncontrado == null) {
+            throw new RuntimeException("Item " + produto.getNome() + " não encontrado");
+        }
+        itens.remove(produtoEncontrado);
+        calcularValor();
+    }
+
+    public Item getItemPorNomeProduto(String nomeProduto) {
         for (Item item : itens) {
             if (item.getProduto().getNome().toLowerCase().equals(nomeProduto.toLowerCase())) {
-                itemEncontrado = Optional.of(item);
+                return item;
             }
         }
-        return itemEncontrado;
+        return null;
     }
-    
-    public void quantidadeProduto(Item i, int quantidade){
-        this.getItemPorNome(i.getProduto().getNome()).get().setQuantidade(quantidade);
-    }
-    
-    public Pedido fechar(CarrinhoDeCompra carrinhoDeCompra) {
-        // TODO: Mudar o número aleatório do código do pedido para o código assim que a regra de código do pedido for fechada
-        Pedido pedido = new Pedido(Math.round(Math.random()), LocalDate.now(), carrinhoDeCompra.getValor(), LocalDate.now().plusDays(5), carrinhoDeCompra);
-        
+
+    public Pedido fechar(CarrinhoDeCompra carrinhoDeCompra, IFormaPagamento formaPagamento) {
+        Pedido pedido = new Pedido(
+                LocalDate.now(),
+                carrinhoDeCompra.getValor(),
+                LocalDate.now().plusDays(5),
+                carrinhoDeCompra,
+                formaPagamento
+        );
         return pedido;
     }
 
@@ -76,17 +85,6 @@ public final class CarrinhoDeCompra {
     private void aplicarDesconto() {
         this.valorDesconto = valor * desconto;
         this.valorAPagar = valor - valorDesconto;
-    }
-
-    public void removerItem(Item item) {
-
-        Optional<Item> produtoEncontrado = getItemPorNome(item.getProduto().getNome());
-        if (!produtoEncontrado.isPresent()) {
-            throw new RuntimeException("Item " + item.getProduto().getNome() + " não encontrado");
-        }
-
-        itens.remove(produtoEncontrado.get());
-        calcularValor();
     }
 
     public LocalDate getData() {
@@ -131,7 +129,6 @@ public final class CarrinhoDeCompra {
         for (Item item : itens) {
             retorno += "\t- " + item.toString() + "\n";
         }
-
         return retorno;
     }
 

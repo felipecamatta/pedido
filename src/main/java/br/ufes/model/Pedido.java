@@ -1,67 +1,73 @@
 package br.ufes.model;
 
 import br.ufes.enumeracoes.SituacaoPedido;
+import br.ufes.interfaces.IFormaPagamento;
 import br.ufes.interfaces.IPoliticaDeDesconto;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-/**
- *
- * @author gabriel
- */
 public class Pedido {
-    
-    private long codigo;
+
+    private UUID codigo;
     private LocalDate data;
     private double desconto;
     private double valorTotal;
     private LocalDate dataValidade;
     private CarrinhoDeCompra carrinho;
+    private Cliente cliente;
     private NotaFiscal notaFiscal;
-    private IPoliticaDeDesconto politicaDeDesconto;
+    private List<IPoliticaDeDesconto> politicaDeDesconto;
+    private IFormaPagamento formaPagamento;
     private SituacaoPedido situacao;
 
-    public Pedido(long codigo, LocalDate data, double valorTotal, LocalDate dataValidade, CarrinhoDeCompra carrinho) {
-        this.codigo = codigo;
+    public Pedido(LocalDate data,
+            double valorTotal, LocalDate dataValidade,
+            CarrinhoDeCompra carrinho, IFormaPagamento formaPagamento) {
+        this.codigo = UUID.randomUUID();
         this.data = data;
         this.valorTotal = valorTotal;
         this.dataValidade = dataValidade;
         this.carrinho = carrinho;
         this.situacao = SituacaoPedido.PENDENTE;
+        this.cliente = carrinho.getCliente();
+        this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
+        this.formaPagamento = formaPagamento;
     }
-    
-    public void removerItem(Item item){
-        carrinho.removerItem(item);
+
+    // TODO: Alterar para carrinho de compra
+    public void removerItem(Produto produto) {
+        carrinho.removerItem(produto);
     }
-    
-    public void alterarQuantidade(Item item, int quantidade){
-        if(quantidade == 0){
-            this.removerItem(item);
-        }else if(quantidade > 0){
-            this.carrinho.quantidadeProduto(item, quantidade);
+
+    // TODO: Alterar para carrinho de compra
+    public void alterarQuantidade(Produto produto, int quantidade) {
+        if (quantidade == 0) {
+            removerItem(produto);
+        } else if (quantidade > 0) {
+            Item item = this.carrinho.getItemPorNomeProduto(produto.getNome());
+            item.setQuantidade(quantidade);
         }
     }
-    
+
     public void concluir(Pedido pedido) {
-        if(LocalDate.now().isAfter(pedido.getDataValidade())) {
+        if (LocalDate.now().isAfter(pedido.getDataValidade())) {
             pedido.setSituacao(SituacaoPedido.VENCIDO);
             throw new RuntimeException("Não foi possível concluir o pedido pois ele expirou");
         }
-        
+
         removerProdutosDoPedidoDoEstoque(pedido);
     }
-    
+
     private void removerProdutosDoPedidoDoEstoque(Pedido pedido) {
-        for(Item itemPedido : pedido.getCarrinho().getItens()) {
+        pedido.getCarrinho().getItens().forEach(itemPedido -> {
             itemPedido.getProduto().getEstoque().diminuirQuantidade(itemPedido.getQuantidade());
-        }
+        });
     }
 
-    public long getCodigo() {
+    public UUID getCodigo() {
         return codigo;
-    }
-
-    public void setCodigo(long codigo) {
-        this.codigo = codigo;
     }
 
     public LocalDate getData() {
@@ -119,5 +125,5 @@ public class Pedido {
     public void setSituacao(SituacaoPedido situacao) {
         this.situacao = situacao;
     }
-    
+
 }

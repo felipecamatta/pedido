@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufes.model;
 
-/**
- *
- * @author gabriel
- */
 public class NotaFiscal {
-    
+
     private long codigo;
     private double taxaICMS;
     private double valorICMS;
@@ -44,7 +35,5 @@ public class NotaFiscal {
     public void setValorICMS(double valorICMS) {
         this.valorICMS = valorICMS;
     }
-    
-    
-    
+
 }

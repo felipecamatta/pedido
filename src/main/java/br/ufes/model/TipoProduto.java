@@ -1,5 +1,7 @@
 package br.ufes.model;
+
 public class TipoProduto {
+
     public double percDesconto = 0.0;
     public String tipo;
 
@@ -8,13 +10,12 @@ public class TipoProduto {
         this.tipo = tipo;
     }
 
-       
     public double getPercDesconto() {
         return percDesconto;
     }
 
     public void setPercDesconto(double percDesconto) {
-        if(percDesconto >= 1){
+        if (percDesconto >= 1) {
             throw new RuntimeException("Informe um valor de desconto válido");
         }
         this.percDesconto = percDesconto;
@@ -27,5 +28,5 @@ public class TipoProduto {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
+
 }
