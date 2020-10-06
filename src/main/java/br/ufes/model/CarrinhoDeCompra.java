@@ -53,6 +53,13 @@ public final class CarrinhoDeCompra {
     public void quantidadeProduto(Item i, int quantidade){
         this.getItemPorNome(i.getProduto().getNome()).get().setQuantidade(quantidade);
     }
+    
+    public Pedido fechar(CarrinhoDeCompra carrinhoDeCompra) {
+        // TODO: Mudar o número aleatório do código do pedido para o código assim que a regra de código do pedido for fechada
+        Pedido pedido = new Pedido(Math.round(Math.random()), LocalDate.now(), carrinhoDeCompra.getValor(), LocalDate.now().plusDays(5), carrinhoDeCompra);
+        
+        return pedido;
+    }
 
     private void calcularValor() {
         valor = 0;
