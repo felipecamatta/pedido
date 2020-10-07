@@ -3,7 +3,9 @@ package br.ufes.model;
 import br.ufes.enumeracoes.SituacaoPedido;
 import br.ufes.interfaces.IFormaPagamento;
 import br.ufes.interfaces.IPoliticaDeDesconto;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -36,34 +38,73 @@ public class Pedido {
         this.formaPagamento = formaPagamento;
     }
 
-    // TODO: Alterar para carrinho de compra
-    public void removerItem(Produto produto) {
-        carrinho.removerItem(produto);
-    }
+    public void concluir() {
+        validarPedidoParaConcluir();
+        
+        setSituacao(SituacaoPedido.PAGO);
 
-    // TODO: Alterar para carrinho de compra
-    public void alterarQuantidade(Produto produto, int quantidade) {
-        if (quantidade == 0) {
-            removerItem(produto);
-        } else if (quantidade > 0) {
-            Item item = this.carrinho.getItemPorNomeProduto(produto.getNome());
-            item.setQuantidade(quantidade);
-        }
+        removerProdutosDoPedidoDoEstoque();
+        
+        getCliente().incrementarPontuacao(getValorComDesconto() * 0.02);
     }
-
-    public void concluir(Pedido pedido) {
-        if (LocalDate.now().isAfter(pedido.getDataValidade())) {
-            pedido.setSituacao(SituacaoPedido.VENCIDO);
+    
+    public void cancelar() {
+        validarPedidoParaCancelar();
+        
+        setSituacao(SituacaoPedido.CANCELADO);
+    }
+    
+    private void validarPedidoParaConcluir() {
+        if (LocalDate.now().isAfter(getDataValidade())) {
+            setSituacao(SituacaoPedido.VENCIDO);
             throw new RuntimeException("Não foi possível concluir o pedido pois ele expirou");
         }
-
-        removerProdutosDoPedidoDoEstoque(pedido);
+        
+        if (SituacaoPedido.CANCELADO.equals(getSituacao()) || SituacaoPedido.VENCIDO.equals(getSituacao())) {
+            throw new RuntimeException("Não foi possível concluir o pedido pois ele se encontra na situação " + getSituacao().getEstado());
+        }
+    }
+    
+    private void validarPedidoParaCancelar() {       
+        if (SituacaoPedido.CANCELADO.equals(getSituacao()) || SituacaoPedido.VENCIDO.equals(getSituacao())) {
+            throw new RuntimeException("Não foi possível cancelar o pedido pois ele se encontra na situação " + getSituacao().getEstado());
+        }
     }
 
-    private void removerProdutosDoPedidoDoEstoque(Pedido pedido) {
-        pedido.getCarrinho().getItens().forEach(itemPedido -> {
+    private void removerProdutosDoPedidoDoEstoque() {
+        getCarrinho().getItens().forEach(itemPedido -> {
             itemPedido.getProduto().getEstoque().diminuirQuantidade(itemPedido.getQuantidade());
         });
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder pedidoStr = new StringBuilder();
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DecimalFormat df = new DecimalFormat("0.00");
+        
+        double valorDescontoEmPorcentagem = (1 - (getValorComDesconto() / getValorTotal()));
+        
+        pedidoStr.append("=-=-=-=-=-=-=-=-=-=-= Informações do pedido =-=-=-=-=-=-=-=-=-=-=\n");
+        pedidoStr.append("Código: ").append(getCodigo()).append("\n");
+        pedidoStr.append("Situação: ").append(getSituacao().getEstado()).append("\n");
+        pedidoStr.append("Data de efetuação do pedido: ").append(dtf.format(getData())).append("\n");
+        pedidoStr.append("Cliente\n");
+        pedidoStr.append("\tNome: ").append(cliente.getNome()).append("\n");
+        pedidoStr.append("\tCPF/CNPJ: ").append(cliente.getCNPJOuCPF()).append("\n");
+        pedidoStr.append("Itens do pedido\n");
+        
+        for(Item item : getCarrinho().getItens()) {
+            pedidoStr.append("\t").append(item.getProduto().getNome()).append("\n");
+            pedidoStr.append("\t\t").append(item.getQuantidade()).append(" x  R$ ").append(df.format(item.getValorUnitario())).append(" =  R$ ").append(df.format(item.getValorItem())).append("\n");
+        }
+        
+        pedidoStr.append("(+) Valor Total: R$ ").append(df.format(getValorTotal())).append("\n");
+        pedidoStr.append("(-) Desconto:    R$ ").append(df.format(getDesconto())).append(" (").append(df.format(valorDescontoEmPorcentagem)).append("%)\n");
+        pedidoStr.append("(=) Valor Final: R$ ").append(df.format(getValorComDesconto())).append("\n");
+        
+        return pedidoStr.toString();
     }
 
     public UUID getCodigo() {
@@ -122,8 +163,16 @@ public class Pedido {
         return situacao;
     }
 
-    public void setSituacao(SituacaoPedido situacao) {
+    private void setSituacao(SituacaoPedido situacao) {
         this.situacao = situacao;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
+    public double getValorComDesconto() {
+        return getValorTotal() - getDesconto();
     }
 
 }
