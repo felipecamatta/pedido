@@ -1,4 +1,4 @@
-package br.ufes.model;
+/*package br.ufes.model;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -30,3 +30,4 @@ public class GerarArquivoPDF {
 
     }
 }
+*/
