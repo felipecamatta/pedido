@@ -37,6 +37,20 @@ public class Pedido {
         this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
         this.formaPagamento = formaPagamento;
     }
+    
+    public Pedido(double valorTotal,
+            CarrinhoDeCompra carrinho) {
+        
+        this.codigo = UUID.randomUUID();
+        this.data = LocalDate.now();
+        this.valorTotal = valorTotal;
+        this.dataValidade = data.plusDays(5);
+        this.carrinho = carrinho;
+        this.situacao = SituacaoPedido.PENDENTE;
+        this.cliente = carrinho.getCliente();
+        this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
+
+    }
 
     public void concluir() {
         validarPedidoParaConcluir();

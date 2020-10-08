@@ -22,7 +22,7 @@ public final class Item {
     }
 
     private void calculaValorItem() {
-        this.valorItem = valorUnitario * quantidade;
+        this.valorItem = (valorUnitario * quantidade) * (1-this.produto.getTipoProduto().getPercDesconto());
     }
 
     public double getValorUnitario() {

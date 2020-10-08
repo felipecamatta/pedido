@@ -46,6 +46,11 @@ public class PedidoTeste {
     public void tearDown() {
     }
 
-   
+    @Test
+    public void CT01(){
+        Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(cliente1, new Produto("Caderno HotWheels", 3.50, 20, new TipoProduto(0.05, "caderno")), 5, LocalDate.now());
+        
+    }
     
 }
