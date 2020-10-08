@@ -14,12 +14,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
+import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  *
@@ -42,7 +44,7 @@ public class CarrinhoDeCompraTeste {
     public void setUp() {
     }
 
-    @AfterEach
+    @AfterEach //ALGUMA SUGESTAO
     public void tearDown() {
     }
 
@@ -150,7 +152,7 @@ public class CarrinhoDeCompraTeste {
                         new Cliente("Carlos", "1552"), p1, 5, dt1);
 
         //SIMULANDO A ALTERAÇÃO DA QUANTIDADE DO PRODUTO
-        carrinho.quantidadeProduto(i1, 3000);
+        carrinho.alterarQuantidade(p1, 3000);
 
         //QUANTIDADE PRODUTO ESPERADO
         double qtdEsperada = 3000;
@@ -235,7 +237,7 @@ public class CarrinhoDeCompraTeste {
                         new TipoProduto(0.02, "Eletrodoméstico")), 10);
 
         //REMOVENDO A "cafeteira"
-        carrinho.removerItem(new Item(p2, qtdAdd2));
+        carrinho.removerItem(p2);
 
         //CONFERINDO SE A REMOÇÃO FOI CONCLUÍDA CORRETAMENTE
         assertEquals(carrinho.getItens(), new Item(p1, qtdAdd1));
