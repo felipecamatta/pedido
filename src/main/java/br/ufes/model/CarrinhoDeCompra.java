@@ -26,8 +26,8 @@ public final class CarrinhoDeCompra {
         this.cliente = cliente;
         this.data = data;
         this.dataVencimento = data.plusMonths(1);
+        this.itens = new ArrayList<>();
         this.addItem(produto, quantidade);
-        this.itens = new ArrayList<Item>();
     }
 
     public final void addItem(Produto produto, double quantidade) {
@@ -49,6 +49,15 @@ public final class CarrinhoDeCompra {
         itens.remove(produtoEncontrado);
         calcularValor();
     }
+    
+    public void alterarQuantidade(Produto produto, int quantidade) {
+        if (quantidade == 0) {
+            removerItem(produto);
+        } else if (quantidade > 0) {
+            Item item = getItemPorNomeProduto(produto.getNome());
+            item.setQuantidade(quantidade);
+        }
+    }
 
     public Item getItemPorNomeProduto(String nomeProduto) {
         for (Item item : itens) {
@@ -59,12 +68,12 @@ public final class CarrinhoDeCompra {
         return null;
     }
 
-    public Pedido fechar(CarrinhoDeCompra carrinhoDeCompra, IFormaPagamento formaPagamento) {
+    public Pedido fechar(IFormaPagamento formaPagamento) {
         Pedido pedido = new Pedido(
                 LocalDate.now(),
-                carrinhoDeCompra.getValor(),
+                getValor(),
                 LocalDate.now().plusDays(5),
-                carrinhoDeCompra,
+                this,
                 formaPagamento
         );
         return pedido;
