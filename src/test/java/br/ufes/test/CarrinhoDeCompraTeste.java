@@ -102,20 +102,15 @@ public class CarrinhoDeCompraTeste {
         Produto p2 = new Produto(nome2, valor2, qtdEstoque2,
                 new TipoProduto(desc2, tipo2));
 
-        //CRIANDO UMA LISTA DE ITENS E ADICIONANDO OS 2 PRODUTOS
-        ArrayList<Item> itens = new ArrayList<>();
-        itens.add(new Item(p2, qtdAdd1));
-        itens.add(new Item(p1, qtdAdd2));
-
         //SIMULANDO A ENTRADA DOS 2 ITENS NO CARRINHO
         CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"),p1, 5, dt1);
         carrinho.addItem(p2, 10);
 
         //CONFERINDO SE O ITEM BUSCADO POR NOME ESTÁ FUNCIONANDO
-        //assertEquals(carrinho.get,itens); //felipe olhar
+        assertEquals(carrinho.getItemPorNomeProduto(nome2),p2); //felipe olhar
     }
 
-    //TESTANDO A FUNÇÃO "quantidadeProduto"
+    //TESTANDO A FUNÇÃO "alterarQuantidade"
     @Test
     public void CT003() {
 
@@ -130,14 +125,8 @@ public class CarrinhoDeCompraTeste {
         Produto p1 = new Produto(nome1, valor1, qtd1,
                 new TipoProduto(desc1, tipo1));
 
-        //CRIANDO ITEM, A PARTIR DO PRODUTO, PARA ADICIONAR NO CARRINHO
-        double qtdAd = 5;
-        Item i1 = new Item(p1, qtdAd);
-
         //SIMULANDO A ENTRADA DE 1 ITEM NO CARRINHO
-        CarrinhoDeCompra carrinho
-                = new CarrinhoDeCompra(
-                        new Cliente("Carlos", "1552"), p1, 5, dt1);
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"), p1, 5, dt1);
 
         //SIMULANDO A ALTERAÇÃO DA QUANTIDADE DO PRODUTO
         carrinho.alterarQuantidade(p1, 3000);
@@ -146,7 +135,8 @@ public class CarrinhoDeCompraTeste {
         double qtdEsperada = 3000;
 
         //CONFERINDO SE A ALTERAÇÃO OCORREU CORRETAMENTE
-        //assertEquals(qtdEsperada, carrinho.getItemPorNome(nome1));
+        assertEquals(qtdEsperada, carrinho.getItemPorNomeProduto(nome1).getQuantidade());
+        //especificar a quantidade, pois existe a quantidade para a compra, e a quantidade do produto em estoque!
     }
 
     //TESTANDO A FUNÇÃO "calcularValor"
@@ -208,5 +198,35 @@ public class CarrinhoDeCompraTeste {
         //CONFERINDO SE A REMOÇÃO FOI CONCLUÍDA CORRETAMENTE
         assertEquals(carrinho.getItens(), itens);
     }
+    @Test
+    public void CT006(){
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+        LocalDate dt1 = LocalDate.parse("15/03/2020", formatter);
+        
+        //SIMULANDO A CRIACAO DE 2 PRODUTOS
+        String nome1 = "smartphone", nome2 = "cafeteira", tipo1 = "Eletrônico", tipo2 = "Eletrodoméstico";
+        double valor1 = 200.00, valor2 = 100.00, desc1 = 0.01, desc2 = 0.02;
+        double qtdEstoque1 = 200, qtdEstoque2 = 300;
+        int qtdAdd1 = 5, qtdAdd2 = 10;
 
+        Produto p1 = new Produto(nome1, valor1, qtdEstoque1,
+                new TipoProduto(desc1, tipo1));
+        Produto p2 = new Produto(nome2, valor2, qtdEstoque2,
+                new TipoProduto(desc2, tipo2));
+        
+ 
+       
+        //SIMULANDO A ENTRADA DOS 2 ITENS NO CARRINHO
+         CarrinhoDeCompra carrinho= new CarrinhoDeCompra(new Cliente("Carlos", "1552"),p1, qtdAdd1, dt1); //ADICIONANDO NO CARRINHO
+        carrinho.addItem(p2, qtdAdd2);
+        
+        
+        //DEFININDO O ITEM A SER RETORNADO, P1 CORRESPONDE A "smartphone"
+        Item itemEsperado = new Item(p1, qtdAdd1);
+        
+        //COMPARANDO OS RETORNOS
+        assertEquals(carrinho.getItemPorNomeProduto(nome1),itemEsperado);
+        
+    }
 }
