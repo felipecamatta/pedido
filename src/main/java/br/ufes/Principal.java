@@ -2,6 +2,7 @@ package br.ufes;
 
 import br.ufes.model.Cliente;
 import br.ufes.model.CarrinhoDeCompra;
+import br.ufes.interfaces.implementacao.GerarArquivoPDF;
 import br.ufes.model.Produto;
 import br.ufes.model.TipoProduto;
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class Principal {
     }
 
     public void menu() {
+        GerarArquivoPDF emitir_pdf = new GerarArquivoPDF();
         Cliente cliente1 = new Cliente("Fulano", "123.456.789-01"); //gera um cliente
 
         List<Produto> produtos = new ArrayList<>(); //Lista de produtos
@@ -78,7 +80,7 @@ public class Principal {
                             if (op1 > produtos.size()) {
                                 System.out.println("Produto não encontrado!\n");
                             } else if (op1 == 0) {
-                                System.out.println(carrinho.toString());
+                                emitir_pdf.gerarArquivo("Nota Fiscal", carrinho.toString());
                                 break; //confirma a compra
                             } else {
                                 System.out.println("Digite a quantidade desejada:");
