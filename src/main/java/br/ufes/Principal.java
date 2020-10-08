@@ -1,5 +1,6 @@
 package br.ufes;
 
+import br.ufes.interfaces.implementacao.GerarArquivoJSON;
 import br.ufes.model.Cliente;
 import br.ufes.model.CarrinhoDeCompra;
 import br.ufes.model.Produto;
@@ -23,11 +24,15 @@ public class Principal {
 
             pedido1.addItem(new Produto("Folha Papel A4", 0.05, 10, new TipoProduto(0.1, "Folha")), 10);
 
+            new GerarArquivoJSON().gerarArquivo(pedido1, "saida");
+            
             System.out.println(pedido1);
 
         } catch (RuntimeException rte) {
             System.err.println("Falha: " + rte.getMessage());
 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }

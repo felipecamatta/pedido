@@ -9,11 +9,13 @@ import br.ufes.interfaces.IGeradorArquivo;
 //import java.io.FileNotFoundException;
 //import java.io.FileOutputStream;
 public class GerarArquivoPDF implements IGeradorArquivo {
+
     // TODO: Realizar gerador de pdf
-    /*public void gerarArquivo(Pedido pedido) {
-
-        Document document = new Document();
-
+    @Override
+    public void gerarArquivo(Object src, String nomeArquivo) {
+        
+        /*Document document = new Document();
+        
         try {
             PdfWriter.getInstance(document, new FileOutputStream("NOVOPDF.pdf"));
         } catch (FileNotFoundException ex) {
@@ -29,7 +31,7 @@ public class GerarArquivoPDF implements IGeradorArquivo {
             Desktop.getDesktop().open(new File("NOVOPDF.pdf"));
         } catch (IOException ex) {
             System.out.println("Error:" + ex);
-        }
-
-    }*/
+        }*/
+    }
+    
 }
