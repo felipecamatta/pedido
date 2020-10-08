@@ -10,7 +10,7 @@ public class DescontoPorTipoProduto implements IPoliticaDeDesconto {
     public double calcularDesconto(CarrinhoDeCompra carrinho) {
         double valorDesconto = 0;
         for (Item itens : carrinho.getItens()) {
-            valorDesconto += itens.getValorItem() * itens.getProduto().getTipo().getPercDesconto();
+            valorDesconto += itens.getValorItem() * itens.getProduto().getTipoProduto().getPercDesconto();
         }
         return valorDesconto;
     }
