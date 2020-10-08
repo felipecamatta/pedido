@@ -81,10 +81,10 @@ public final class CarrinhoDeCompra {
 
     private void calcularValor() {
         valor = 0;
-        for (Item item : itens) {
+        for (Item item : itens) {// 
             valor += item.getValorItem();
         }
-        aplicarDesconto();
+        aplicarDesconto(); // AQ APLICA O DESC
     }
 
     public double getValorDesconto() {
