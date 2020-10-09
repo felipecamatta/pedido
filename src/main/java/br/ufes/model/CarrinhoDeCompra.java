@@ -1,6 +1,6 @@
 package br.ufes.model;
 
-import br.ufes.interfaces.IFormaPagamento;
+import br.ufes.enumeracoes.FormaPagamento;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ public final class CarrinhoDeCompra {
     private final double desconto = 0.05;
     private double valorDesconto;
     private double valorAPagar;
-    private ArrayList<Item> itens;
+    private List<Item> itens;
     private final LocalDate data;
     private final LocalDate dataVencimento;
 
@@ -68,12 +68,13 @@ public final class CarrinhoDeCompra {
         return null;
     }
 
-    public Pedido fechar(IFormaPagamento formaPagamento) {
+    public Pedido fechar(Endereco enderecoOrigem, FormaPagamento formaPagamento) {
         Pedido pedido = new Pedido(
                 LocalDate.now(),
                 getValor(),
                 LocalDate.now().plusDays(5),
                 this,
+                enderecoOrigem,
                 formaPagamento
         );
         return pedido;
@@ -81,10 +82,10 @@ public final class CarrinhoDeCompra {
 
     private void calcularValor() {
         valor = 0;
-        for (Item item : itens) {
+        for (Item item : itens) {// 
             valor += item.getValorItem();
         }
-        aplicarDesconto();
+        aplicarDesconto(); // AQ APLICA O DESC
     }
 
     public double getValorDesconto() {

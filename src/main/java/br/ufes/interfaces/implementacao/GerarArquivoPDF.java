@@ -1,37 +1,33 @@
 package br.ufes.interfaces.implementacao;
 
-//import com.itextpdf.text.Document;
 import br.ufes.interfaces.IGeradorArquivo;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
-//import com.itextpdf.text.DocumentException;
-//import com.itextpdf.text.Paragraph;
-//import com.itextpdf.text.pdf.PdfWriter;
-//import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
 public class GerarArquivoPDF implements IGeradorArquivo {
-
-    // TODO: Realizar gerador de pdf
+    
     @Override
-    public void gerarArquivo(Object src, String nomeArquivo) {
-        
-        /*Document document = new Document();
+    public void gerarArquivo(Object src, String nomeArquivo) throws DocumentException {
+
+        Document document = new Document();
         
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("NOVOPDF.pdf"));
+            File file = new File("Saida/pdf/" + nomeArquivo + ".pdf");
+            file.getParentFile().mkdirs();
+            
+            PdfWriter.getInstance(document, new FileOutputStream(file));
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(GerarArquivoPDF.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error:" + ex);
         }
         document.open();
-        document.add(new Paragraph("ADICIONAR OS DADOS DE PEDIDO AQUI PARA O PDF"));
-        finally{
-            document.close();
-        }
+        document.add(new Paragraph(src.toString()));
+        document.close();
 
-        try {
-            Desktop.getDesktop().open(new File("NOVOPDF.pdf"));
-        } catch (IOException ex) {
-            System.out.println("Error:" + ex);
-        }*/
     }
     
 }
