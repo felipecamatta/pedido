@@ -73,4 +73,12 @@ public class Endereco {
         this.numero = numero;
     }
 
+    public UF getUf() {
+        return uf;
+    }
+
+    public void setUf(UF uf) {
+        this.uf = uf;
+    }
+
 }

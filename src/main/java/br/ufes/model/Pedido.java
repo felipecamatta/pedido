@@ -1,7 +1,7 @@
 package br.ufes.model;
 
+import br.ufes.enumeracoes.FormaPagamento;
 import br.ufes.enumeracoes.SituacaoPedido;
-import br.ufes.interfaces.IFormaPagamento;
 import br.ufes.interfaces.IPoliticaDeDesconto;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -19,14 +19,21 @@ public class Pedido {
     private LocalDate dataValidade;
     private CarrinhoDeCompra carrinho;
     private Cliente cliente;
+    private Endereco enderecoOrigem;
+    private Endereco enderecoDestino;
     private NotaFiscal notaFiscal;
     private List<IPoliticaDeDesconto> politicaDeDesconto;
-    private IFormaPagamento formaPagamento;
     private SituacaoPedido situacao;
+    private FormaPagamento formaPagamento;
 
-    public Pedido(LocalDate data,
-            double valorTotal, LocalDate dataValidade,
-            CarrinhoDeCompra carrinho, IFormaPagamento formaPagamento) {
+    public Pedido(
+            LocalDate data,
+            double valorTotal,
+            LocalDate dataValidade,
+            CarrinhoDeCompra carrinho,
+            Endereco enderecoOrigem,
+            FormaPagamento formaPagamento
+    ) {
         this.codigo = UUID.randomUUID();
         this.data = data;
         this.valorTotal = valorTotal;
@@ -35,6 +42,8 @@ public class Pedido {
         this.situacao = SituacaoPedido.PENDENTE;
         this.cliente = carrinho.getCliente();
         this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
+        this.enderecoOrigem = enderecoOrigem;
+        this.enderecoDestino = this.cliente.getEndereco();
         this.formaPagamento = formaPagamento;
     }
     
@@ -53,33 +62,30 @@ public class Pedido {
     }
 
     public void concluir() {
+        // TODO: Gerar nota fiscal, quando gerar, pegar o ICMS e calcular sua taxa
         validarPedidoParaConcluir();
-        
         setSituacao(SituacaoPedido.PAGO);
-
         removerProdutosDoPedidoDoEstoque();
-        
         getCliente().incrementarPontuacao(getValorComDesconto() * 0.02);
     }
-    
+
     public void cancelar() {
         validarPedidoParaCancelar();
-        
         setSituacao(SituacaoPedido.CANCELADO);
     }
-    
+
     private void validarPedidoParaConcluir() {
         if (LocalDate.now().isAfter(getDataValidade())) {
             setSituacao(SituacaoPedido.VENCIDO);
             throw new RuntimeException("Não foi possível concluir o pedido pois ele expirou");
         }
-        
+
         if (SituacaoPedido.CANCELADO.equals(getSituacao()) || SituacaoPedido.VENCIDO.equals(getSituacao())) {
             throw new RuntimeException("Não foi possível concluir o pedido pois ele se encontra na situação " + getSituacao().getEstado());
         }
     }
-    
-    private void validarPedidoParaCancelar() {       
+
+    private void validarPedidoParaCancelar() {
         if (SituacaoPedido.CANCELADO.equals(getSituacao()) || SituacaoPedido.VENCIDO.equals(getSituacao())) {
             throw new RuntimeException("Não foi possível cancelar o pedido pois ele se encontra na situação " + getSituacao().getEstado());
         }
@@ -90,16 +96,16 @@ public class Pedido {
             itemPedido.getProduto().getEstoque().diminuirQuantidade(itemPedido.getQuantidade());
         });
     }
-    
+
     @Override
     public String toString() {
         StringBuilder pedidoStr = new StringBuilder();
-        
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DecimalFormat df = new DecimalFormat("0.00");
-        
+
         double valorDescontoEmPorcentagem = (1 - (getValorComDesconto() / getValorTotal()));
-        
+
         pedidoStr.append("=-=-=-=-=-=-=-=-=-=-= Informações do pedido =-=-=-=-=-=-=-=-=-=-=\n");
         pedidoStr.append("Código: ").append(getCodigo()).append("\n");
         pedidoStr.append("Situação: ").append(getSituacao().getEstado()).append("\n");
@@ -108,16 +114,16 @@ public class Pedido {
         pedidoStr.append("\tNome: ").append(cliente.getNome()).append("\n");
         pedidoStr.append("\tCPF/CNPJ: ").append(cliente.getCNPJOuCPF()).append("\n");
         pedidoStr.append("Itens do pedido\n");
-        
-        for(Item item : getCarrinho().getItens()) {
+
+        for (Item item : getCarrinho().getItens()) {
             pedidoStr.append("\t").append(item.getProduto().getNome()).append("\n");
             pedidoStr.append("\t\t").append(item.getQuantidade()).append(" x  R$ ").append(df.format(item.getValorUnitario())).append(" =  R$ ").append(df.format(item.getValorItem())).append("\n");
         }
-        
+
         pedidoStr.append("(+) Valor Total: R$ ").append(df.format(getValorTotal())).append("\n");
         pedidoStr.append("(-) Desconto:    R$ ").append(df.format(getDesconto())).append(" (").append(df.format(valorDescontoEmPorcentagem)).append("%)\n");
         pedidoStr.append("(=) Valor Final: R$ ").append(df.format(getValorComDesconto())).append("\n");
-        
+
         return pedidoStr.toString();
     }
 
@@ -184,7 +190,7 @@ public class Pedido {
     public Cliente getCliente() {
         return cliente;
     }
-    
+
     public double getValorComDesconto() {
         return getValorTotal() - getDesconto();
     }
