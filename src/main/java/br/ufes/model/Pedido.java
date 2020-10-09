@@ -100,6 +100,11 @@ public class Pedido {
         });
     }
 
+    public void setData(LocalDate data) {
+        this.data = data;
+        this.dataValidade = this.data.plusDays(5);
+    }
+
     public UUID getCodigo() {
         return codigo;
     }

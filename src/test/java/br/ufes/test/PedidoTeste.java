@@ -12,6 +12,8 @@ import br.ufes.model.Pedido;
 import br.ufes.model.Produto;
 import br.ufes.model.TipoProduto;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -93,5 +95,40 @@ public class PedidoTeste {
     }
     
     //Testes para validação do pedido
+    @Test
+    public void CT03(){
+        Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
+        Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG);
+        cliente1.setEndereco(enderecoCliente);
+        cliente1.incrementarPontuacao(70);//Pontuação necessária para 15% de desconto
+        Endereco enderecoLoja = new Endereco("Rua Dr. Wanderley", "Prédio", "29500-000", "Centro", "Alegre", 20, UF.ES);
+        
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(cliente1, new Produto("Caderno HotWheels", 3.50, 8, new TipoProduto("caderno", 0.1)), 5, LocalDate.now());
+        carrinho.addItem(new Produto("Tilibra", 2, 10, new TipoProduto("lápis", 0.05)), 3);
+        Pedido p = new Pedido(carrinho, enderecoLoja, FormaPagamento.BOLETO);
+        
+        p.setData(LocalDate.now().plusDays(-6));
+        exception.expect(RuntimeException.class);
+        
+        p.concluir();//Não há necessidade de um try-catch, o próprio teste espera isso
+    }
+    
+    @Test
+    public void CT04(){
+        Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
+        Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG);
+        cliente1.setEndereco(enderecoCliente);
+        cliente1.incrementarPontuacao(70);//Pontuação necessária para 15% de desconto
+        Endereco enderecoLoja = new Endereco("Rua Dr. Wanderley", "Prédio", "29500-000", "Centro", "Alegre", 20, UF.ES);
+        
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(cliente1, new Produto("Caderno HotWheels", 3.50, 8, new TipoProduto("caderno", 0.1)), 5, LocalDate.now());
+        carrinho.addItem(new Produto("Tilibra", 2, 10, new TipoProduto("lápis", 0.05)), 3);
+        Pedido p = new Pedido(carrinho, enderecoLoja, FormaPagamento.BOLETO);
+        
+        p.cancelar();
+        exception.expect(RuntimeException.class);
+        
+        p.concluir();//Não há necessidade de um try-catch, o próprio teste espera isso
+    }
 
 }
