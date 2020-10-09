@@ -12,7 +12,6 @@ public final class CarrinhoDeCompra {
 
     private Cliente cliente;
     private double valor;
-    private final double desconto = 0;
     private double valorDesconto;
     private double valorAPagar;
     private List<Item> itens;
@@ -85,16 +84,10 @@ public final class CarrinhoDeCompra {
         for (Item item : itens) {// 
             valor += item.getValorItem();
         }
-        //aplicarDesconto(); // AQ APLICA O DESC
     }
 
     public double getValorDesconto() {
         return valorDesconto;
-    }
-
-    private void aplicarDesconto() {
-        this.valorDesconto = valor * desconto;
-        this.valorAPagar = valor - valorDesconto;
     }
 
     public LocalDate getData() {
@@ -107,10 +100,6 @@ public final class CarrinhoDeCompra {
 
     public double getValor() {
         return valor;
-    }
-
-    public double getDesconto() {
-        return desconto;
     }
 
     public double getValorAPagar() {
@@ -132,8 +121,6 @@ public final class CarrinhoDeCompra {
         retorno += cliente + "\n";
         retorno += "Data: " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ", ";
         retorno += "Data de vencimento: " + dataVencimento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
-        retorno += "Valor sem desconto: R$ " + df.format(getValor()) + "\n";
-        retorno += "Desconto: R$: " + df.format(valorDesconto) + " (" + desconto * 100 + "%)\n";
         retorno += "Valor a pagar: R$ " + df.format(valorAPagar) + "\n";
         retorno += "Itens do pedido:\n";
         for (Item item : itens) {
