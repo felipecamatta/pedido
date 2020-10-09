@@ -54,9 +54,11 @@ public class Principal {
         produtos.add(new Produto("Faber Castel", 3.50, 8, new TipoProduto(0.05, "borracha")));
         produtos.add(new Produto("Tilibra", 3.50, 8, new TipoProduto(0.05, "lápis")));
 
-        int op = -1, op1 = op, formaPagamento = -1;
-        FormaPagamento formaPagamentoEscolhida = null;
+        int op = -1, op1 = op, formaPagamento;
+        FormaPagamento formaPagamentoPedido;
         while (op!=0) {
+            formaPagamentoPedido = null;
+            formaPagamento = -1;
             System.out.println("Digite 1 para fazer um pedido\n"
                     + "Digite 0 para sair:\n");
             Scanner sc = new Scanner(System.in);
@@ -98,13 +100,13 @@ public class Principal {
                                     
                                     switch (formaPagamento) {
                                         case 1:
-                                            formaPagamentoEscolhida = FormaPagamento.BOLETO;
+                                            formaPagamentoPedido = FormaPagamento.BOLETO;
                                             break;
                                         case 2: 
-                                            formaPagamentoEscolhida = FormaPagamento.CARTAO_CREDITO;
+                                            formaPagamentoPedido = FormaPagamento.CARTAO_CREDITO;
                                             break;
                                         case 3:
-                                            formaPagamentoEscolhida = FormaPagamento.CARTAO_DEBITO;
+                                            formaPagamentoPedido = FormaPagamento.CARTAO_DEBITO;
                                             break;
                                         default:
                                             formaPagamento = -1;
@@ -112,7 +114,7 @@ public class Principal {
                                     }
                                 }
                                 
-                                Pedido pedido = carrinho.fechar(enderecoLoja, formaPagamentoEscolhida);
+                                Pedido pedido = carrinho.fechar(enderecoLoja, formaPagamentoPedido);
                                 
                                 pedido.concluir();
                                 
