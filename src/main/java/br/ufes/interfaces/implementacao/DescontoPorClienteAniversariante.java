@@ -1,22 +1,21 @@
 package br.ufes.interfaces.implementacao;
 
 import br.ufes.interfaces.IPoliticaDeDesconto;
-import br.ufes.model.CarrinhoDeCompra;
+import br.ufes.model.Pedido;
 
 public class DescontoPorClienteAniversariante implements IPoliticaDeDesconto {
 
     @Override
-    public double calcularDesconto(CarrinhoDeCompra carrinho) {
-
+    public double calcularDesconto(Pedido pedido) {
         try {
-            if (carrinho.getCliente().getDataNascimento().withYear(carrinho.getData().getYear()).getDayOfYear() == carrinho.getData().getDayOfYear()) {
-                return carrinho.getValor() * 0.05;
+            if (pedido.getCliente().getDataNascimento().withYear(pedido.getData().getYear()).getDayOfYear() == pedido.getData().getDayOfYear()) {
+                return pedido.getValorTotal() * 0.05;
+            } else {
+                return 0;
             }
         } catch (Exception e) {
-            throw e;
+            throw new RuntimeException("Erro ao calcular desconto.");
         }
-
-        return 0;
     }
 
 }
