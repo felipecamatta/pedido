@@ -1,10 +1,5 @@
 package br.ufes.test;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import br.ufes.model.CarrinhoDeCompra;
 import br.ufes.model.Cliente;
 import br.ufes.model.Produto;
@@ -16,10 +11,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 
-/**
- *
- * @author 55289
- */
 public class PedidoTeste {
 
     public PedidoTeste() {
@@ -42,10 +33,10 @@ public class PedidoTeste {
     }
 
     @Test
-    public void CT01(){
-        Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
-        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(cliente1, new Produto("Caderno HotWheels", 3.50, 20, new TipoProduto(0.05, "caderno")), 5, LocalDate.now());
-        
+    public void CT01() {
+//        Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
+//        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(cliente1, new Produto("Caderno HotWheels", 3.50, 20, new TipoProduto(0.05, "caderno")), 5, LocalDate.now());
+
     }
-    
+
 }

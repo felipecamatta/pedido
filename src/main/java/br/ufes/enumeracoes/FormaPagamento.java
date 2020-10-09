@@ -15,4 +15,5 @@ public enum FormaPagamento {
     public String getDescricao() {
         return this.descricao;
     }
+
 }

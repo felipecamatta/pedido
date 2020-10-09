@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufes.test;
 
 import br.ufes.model.CarrinhoDeCompra;
@@ -13,10 +8,7 @@ import br.ufes.model.TipoProduto;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,14 +17,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.rules.ExpectedException;
 
-
-/**
- *
- * @author 55289
- */
 public class CarrinhoDeCompraTeste {
 
     public CarrinhoDeCompraTeste() {
@@ -53,7 +39,7 @@ public class CarrinhoDeCompraTeste {
     @AfterEach //ALGUMA SUGESTAO
     public void tearDown() {
     }
-    
+
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
@@ -71,9 +57,9 @@ public class CarrinhoDeCompraTeste {
         int qtdAdd1 = 5, qtdAdd2 = 10;
 
         Produto p1 = new Produto(nome1, valor1, qtdEstoque1,
-                new TipoProduto(desc1, tipo1));
+                new TipoProduto(tipo1, desc1));
         Produto p2 = new Produto(nome2, valor2, qtdEstoque2,
-                new TipoProduto(desc2, tipo2));
+                new TipoProduto(tipo2, desc2));
 
         //CRIANDO UMA LISTA DE ITENS E ADICIONANDO OS 2 PRODUTOS
         ArrayList<Item> itens = new ArrayList<>();
@@ -83,12 +69,12 @@ public class CarrinhoDeCompraTeste {
                 new Item(p2, qtdAdd2));
 
         //SIMULANDO A ENTRADA DOS 2 ITENS NO CARRINHO
-        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"),p1, qtdAdd1, dt1);
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"), p1, qtdAdd1, dt1);
         carrinho.addItem(p2, 10);
 
         //CONFERINDO SE OS 2 PRODUTOS CRIADOS EQUIVALEM AOS PRODUTOS DO CARRINHO
-        assertEquals(carrinho.getItens().toString(),itens.toString());
-        
+        assertEquals(carrinho.getItens().toString(), itens.toString());
+
     }
 
     //TESTANDO A FUNÇÃO "getItemPorNome"
@@ -105,12 +91,12 @@ public class CarrinhoDeCompraTeste {
         int qtdAdd1 = 5, qtdAdd2 = 10;
 
         Produto p1 = new Produto(nome1, valor1, qtdEstoque1,
-                new TipoProduto(desc1, tipo1));
+                new TipoProduto(tipo1, desc1));
         Produto p2 = new Produto(nome2, valor2, qtdEstoque2,
-                new TipoProduto(desc2, tipo2));
+                new TipoProduto(tipo2, desc2));
 
         //SIMULANDO A ENTRADA DOS 2 ITENS NO CARRINHO
-        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"),p1, qtdAdd1, dt1);
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"), p1, qtdAdd1, dt1);
         carrinho.addItem(p2, qtdAdd2);
 
         //CONFERINDO SE O ITEM BUSCADO POR NOME ESTÁ FUNCIONANDO
@@ -131,13 +117,13 @@ public class CarrinhoDeCompraTeste {
         double qtd1 = 200;
 
         Produto p1 = new Produto(nome1, valor1, qtd1,
-                new TipoProduto(desc1, tipo1));
+                new TipoProduto(tipo1, desc1));
 
         //SIMULANDO A ENTRADA DE 1 ITEM NO CARRINHO
         CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"), p1, 5, dt1);
 
         exception.expect(RuntimeException.class);
-        
+
         //SIMULANDO A ALTERAÇÃO DA QUANTIDADE DO PRODUTO
         carrinho.alterarQuantidade(p1, 3000);
 
@@ -175,7 +161,6 @@ public class CarrinhoDeCompraTeste {
         double valorEsperado = (((200*qtdAdd1)* (1-desc1)) + ((100*qtdAdd2)*(1-desc2))) * (1-carrinho.getDesconto());
         assertEquals(valorEsperado, carrinho.getValorAPagar()); 
     }*/
- 
     //TESTANDO A FUNÇÃO "removerItem"
     @Test
     public void CT04() {
@@ -190,16 +175,16 @@ public class CarrinhoDeCompraTeste {
         int qtdAdd1 = 5, qtdAdd2 = 10;
 
         Produto p1 = new Produto(nome1, valor1, qtdEstoque1,
-                new TipoProduto(desc1, tipo1));
+                new TipoProduto(tipo1, desc1));
         Produto p2 = new Produto(nome2, valor2, qtdEstoque2,
-                new TipoProduto(desc2, tipo2));
+                new TipoProduto(tipo2, desc2));
 
         //CRIANDO UMA LISTA DE ITENS E ADICIONANDO OS 2 PRODUTOS
         List<Item> itens = new ArrayList<>();
         itens.add(new Item(p1, qtdAdd1));
 
         //SIMULANDO A ENTRADA DOS 2 ITENS NO CARRINHO
-         CarrinhoDeCompra carrinho= new CarrinhoDeCompra(new Cliente("Carlos", "1552"),p1, qtdAdd1, dt1); //ADICIONANDO NO CARRINHO
+        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(new Cliente("Carlos", "1552"), p1, qtdAdd1, dt1); //ADICIONANDO NO CARRINHO
         carrinho.addItem(p2, qtdAdd2);
 
         //REMOVENDO A "cafeteira"
@@ -207,7 +192,7 @@ public class CarrinhoDeCompraTeste {
 
         //CONFERINDO SE A REMOÇÃO FOI CONCLUÍDA CORRETAMENTE
         assertEquals(carrinho.getItens().toString(), itens.toString());
-        
+
     }
-    
+
 }

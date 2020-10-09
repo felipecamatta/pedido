@@ -14,7 +14,7 @@ public class NotaFiscal {
         this.taxaICMS = taxaICMS;
         this.valorICMS = valorICMS;
     }
-    
+
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.00");
