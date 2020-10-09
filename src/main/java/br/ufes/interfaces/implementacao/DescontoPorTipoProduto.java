@@ -9,7 +9,7 @@ public class DescontoPorTipoProduto implements IPoliticaDeDesconto {
     @Override
     public double calcularDesconto(Pedido pedido) {
         double valorDesconto = 0;
-        for (Item itens : pedido.getCarrinho().getItens()) {
+        for (Item itens : pedido.getCarrinho().getItens()) {//Aplicado em cima do valor total do item, sem considerar descontos prévios
             valorDesconto += itens.getValorItem() * itens.getProduto().getTipoProduto().getDesconto();
         }
         return valorDesconto;

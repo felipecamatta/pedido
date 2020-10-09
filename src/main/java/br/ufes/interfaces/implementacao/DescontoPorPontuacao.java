@@ -9,13 +9,16 @@ public class DescontoPorPontuacao implements IPoliticaDeDesconto {
     public double calcularDesconto(Pedido pedido) {
         double pontos = pedido.getCliente().getPontuacao();
         if (pontos < 30) {
-            return pedido.getValorTotal() * (0 * pontos);
+            return 0;
         } else if (pontos < 50) {
-            return pedido.getValorTotal() * (0.05 * pontos);
+            pedido.getCliente().diminuirPontuacao(10);
+            return (pedido.getValorTotal() - pedido.getDesconto()) * 0.05;
         } else if (pontos < 70) {
-            return pedido.getValorTotal() * (0.10 * pontos);
+            pedido.getCliente().diminuirPontuacao(20);
+            return (pedido.getValorTotal() - pedido.getDesconto()) * 0.1;
         } else {
-            return pedido.getValorTotal() * (0.15 * pontos);
+            pedido.getCliente().diminuirPontuacao(30);
+            return (pedido.getValorTotal() - pedido.getDesconto()) * 0.15;
         }
     }
 
