@@ -43,7 +43,8 @@ public class Pedido {
     }
 
     public void aplicarDesconto(IPoliticaDeDesconto desconto) {
-        if (politicaDeDesconto.contains(desconto)) {
+        for(IPoliticaDeDesconto i : politicaDeDesconto )
+        if (i.getClass().equals(desconto.getClass())) {
             throw new RuntimeException("Desconto já aplicado!\n");
         }
         this.politicaDeDesconto.add(desconto);
@@ -51,6 +52,7 @@ public class Pedido {
 
     private void calcularValorTotal() {
         this.valorTotal = this.carrinho.calcularValor();
+        this.desconto = 0; 
         for (IPoliticaDeDesconto desc : politicaDeDesconto) {
             this.desconto += desc.calcularDesconto(this);
         }

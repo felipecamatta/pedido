@@ -30,6 +30,16 @@ public final class Cliente {
 
         return pontuacao;
     }
+    
+    public double diminuirPontuacao(double valorParaDiminuir) {
+        if (valorParaDiminuir < pontuacao) {
+            pontuacao -= valorParaDiminuir;
+        }else{
+            pontuacao = 0;
+        }
+
+        return pontuacao;
+    }
 
     public String getNome() {
         return nome;

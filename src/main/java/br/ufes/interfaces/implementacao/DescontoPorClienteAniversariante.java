@@ -10,7 +10,7 @@ public class DescontoPorClienteAniversariante implements IPoliticaDeDesconto {
 
         try {
             if (pedido.getCarrinho().getCliente().getDataNascimento().withYear(pedido.getData().getYear()).getDayOfYear() == pedido.getData().getDayOfYear()) {
-                return pedido.getValorTotal() * 0.05;
+                return (pedido.getValorTotal() - pedido.getDesconto()) * 0.05;
             } else {
                 return 0;
             }
