@@ -1,5 +1,6 @@
 package br.ufes;
 
+import br.ufes.interfaces.implementacao.GerarArquivoJSON;
 import br.ufes.model.Cliente;
 import br.ufes.model.CarrinhoDeCompra;
 import br.ufes.interfaces.implementacao.GerarArquivoPDF;
@@ -30,12 +31,16 @@ public class Principal {
         } catch (RuntimeException rte) {
             System.err.println("Falha: " + rte.getMessage());
 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }
 
     public void menu() {
         GerarArquivoPDF emitir_pdf = new GerarArquivoPDF();
+        GerarArquivoJSON emitir_json = new GerarArquivoJSON();
+        
         Cliente cliente1 = new Cliente("Fulano", "123.456.789-01"); //gera um cliente
 
         List<Produto> produtos = new ArrayList<>(); //Lista de produtos
@@ -80,7 +85,9 @@ public class Principal {
                             if (op1 > produtos.size()) {
                                 System.out.println("Produto não encontrado!\n");
                             } else if (op1 == 0) {
-                                emitir_pdf.gerarArquivo("Nota Fiscal", carrinho.toString());
+                                emitir_pdf.gerarArquivo(carrinho, "Nota Fiscal");
+                                emitir_json.gerarArquivo(carrinho, "Nota Fiscal");
+                                
                                 break; //confirma a compra
                             } else {
                                 System.out.println("Digite a quantidade desejada:");
