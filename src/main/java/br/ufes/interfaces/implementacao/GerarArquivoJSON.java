@@ -11,25 +11,25 @@ public class GerarArquivoJSON implements IGeradorArquivo {
 
     @Override
     public void gerarArquivo(Object src, String nomeArquivo) throws Exception {
-        if(src == null) {
-            throw new RuntimeException("O objeto fonte das informações não foi fornecido");
+        if (src == null) {
+            throw new RuntimeException("O objeto fonte das informações não foi fornecido.");
         }
-        
-        if(nomeArquivo == null || nomeArquivo.isBlank()) {
-            throw new RuntimeException("Nome do arquivo não fornecido");
+
+        if (nomeArquivo == null || nomeArquivo.isBlank()) {
+            throw new RuntimeException("Nome do arquivo não fornecido.");
         }
-        
+
         File file = new File("Saida/json/" + nomeArquivo + ".json");
         file.getParentFile().mkdirs();
-        
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
+
         Writer writer = new FileWriter(file);
-        
+
         gson.toJson(src, writer);
-        
+
         writer.close();
-        
+
     }
 
 }

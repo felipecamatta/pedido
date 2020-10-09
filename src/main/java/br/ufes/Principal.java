@@ -23,7 +23,7 @@ public class Principal {
         try {
 
             ICMSUtil.lerArquivoICMS();
-            
+
             Principal p = new Principal();
             p.menu();
 
@@ -39,9 +39,9 @@ public class Principal {
     public void menu() {
         GerarArquivoPDF emitir_pdf = new GerarArquivoPDF();
         GerarArquivoJSON emitir_json = new GerarArquivoJSON();
-        
+
         Cliente cliente1 = new Cliente("Fulano", "123.456.789-01"); //gera um cliente
-        Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG );
+        Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG);
         cliente1.setEndereco(enderecoCliente);
         Endereco enderecoLoja = new Endereco("Rua Dr. Wanderley", "Prédio", "29500-000", "Centro", "Alegre", 20, UF.ES);
 
@@ -49,14 +49,14 @@ public class Principal {
         /*
              *Pré-cadastra uma série de produtos 
          */
-        produtos.add(new Produto("Caneta Bic", 3.50, 8, new TipoProduto(0.05, "caneta")));
-        produtos.add(new Produto("Caderno HotWheels", 3.50, 8, new TipoProduto(0.05, "caderno")));
-        produtos.add(new Produto("Faber Castel", 3.50, 8, new TipoProduto(0.05, "borracha")));
-        produtos.add(new Produto("Tilibra", 3.50, 8, new TipoProduto(0.05, "lápis")));
+        produtos.add(new Produto("Caneta Bic", 3.50, 8, new TipoProduto("caneta", 0.05)));
+        produtos.add(new Produto("Caderno HotWheels", 3.50, 8, new TipoProduto("caderno", 0.05)));
+        produtos.add(new Produto("Faber Castel", 3.50, 8, new TipoProduto("borracha", 0.05)));
+        produtos.add(new Produto("Tilibra", 3.50, 8, new TipoProduto("lápis", 0.05)));
 
         int op = -1, op1 = op, formaPagamento;
         FormaPagamento formaPagamentoPedido;
-        while (op!=0) {
+        while (op != 0) {
             formaPagamentoPedido = null;
             formaPagamento = -1;
             System.out.println("Digite 1 para fazer um pedido\n"
@@ -74,8 +74,8 @@ public class Principal {
                     while (true) {
                         try {
                             System.out.print("Selecione o produto desejado na lista abaixo\n"
-                            + "ou digite 0 pra fechar a compra\n"
-                            + "digite -1 para cancelar e voltar ao menu principal:\n");
+                                    + "ou digite 0 pra fechar a compra\n"
+                                    + "digite -1 para cancelar e voltar ao menu principal:\n");
                             int cod = 1;
                             //imprime a lista de produtos
                             for (Produto p : produtos) {
@@ -84,7 +84,7 @@ public class Principal {
                             }
                             op1 = sc.nextInt();//lê opcão
                             int qtd = 0; //quantidade de produtos desejado
-                            if(op1 < 0){
+                            if (op1 < 0) {
                                 break;//aqui volta ao menu anterior e cancela a compra
                             }
                             if (op1 > produtos.size()) {
@@ -95,14 +95,14 @@ public class Principal {
                                     System.out.println("1 - Boleto");
                                     System.out.println("2 - Cartão de Crédito");
                                     System.out.println("3 - Cartão de Débito");
-                                    
+
                                     formaPagamento = sc.nextInt();
-                                    
+
                                     switch (formaPagamento) {
                                         case 1:
                                             formaPagamentoPedido = FormaPagamento.BOLETO;
                                             break;
-                                        case 2: 
+                                        case 2:
                                             formaPagamentoPedido = FormaPagamento.CARTAO_CREDITO;
                                             break;
                                         case 3:
@@ -113,22 +113,22 @@ public class Principal {
                                             break;
                                     }
                                 }
-                                
+
                                 Pedido pedido = carrinho.fechar(enderecoLoja, formaPagamentoPedido);
-                                
+
                                 pedido.concluir();
-                                
+
                                 emitir_pdf.gerarArquivo(pedido, "Nota Fiscal");
                                 emitir_json.gerarArquivo(pedido, "Nota Fiscal");
-                                
+
                                 break; //confirma a compra
                             } else {
                                 System.out.println("Digite a quantidade desejada:");
                                 qtd = sc.nextInt();
                                 if (carrinho == null) {
-                                    carrinho = new CarrinhoDeCompra(cliente1, produtos.get(op1-1), qtd, LocalDate.now());
+                                    carrinho = new CarrinhoDeCompra(cliente1, produtos.get(op1 - 1), qtd, LocalDate.now());
                                 } else {
-                                    carrinho.addItem(produtos.get(op1-1), qtd);
+                                    carrinho.addItem(produtos.get(op1 - 1), qtd);
                                 }
                             }
 

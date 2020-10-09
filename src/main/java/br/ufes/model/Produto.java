@@ -9,8 +9,9 @@ public final class Produto {
     private Estoque estoque;
 
     public Produto(String nome, double valorUnitario, double quantidade, TipoProduto tipo) {
-        this.nome = nome;
+        setNome(nome);
         setValorUnitario(valorUnitario);
+        this.valorUltimaCompra = this.valorUnitario;
         this.estoque = new Estoque(quantidade);
         this.tipoProduto = tipo;
     }
