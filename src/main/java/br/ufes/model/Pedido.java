@@ -3,6 +3,7 @@ package br.ufes.model;
 import br.ufes.enumeracoes.FormaPagamento;
 import br.ufes.enumeracoes.SituacaoPedido;
 import br.ufes.interfaces.IPoliticaDeDesconto;
+import br.ufes.util.ICMSUtil;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -61,12 +62,15 @@ public class Pedido {
 
     }
 
-    public void concluir() {
-        // TODO: Gerar nota fiscal, quando gerar, pegar o ICMS e calcular sua taxa
+    public void concluir() throws Exception {
         validarPedidoParaConcluir();
         setSituacao(SituacaoPedido.PAGO);
         removerProdutosDoPedidoDoEstoque();
         getCliente().incrementarPontuacao(getValorComDesconto() * 0.02);
+        
+        double taxaICMS = ICMSUtil.consultarTaxa(enderecoOrigem, enderecoDestino);
+        
+        setNotaFiscal(new NotaFiscal(taxaICMS, getValorTotal() * (taxaICMS / 100)));
     }
 
     public void cancelar() {
@@ -109,6 +113,7 @@ public class Pedido {
         pedidoStr.append("=-=-=-=-=-=-=-=-=-=-= Informações do pedido =-=-=-=-=-=-=-=-=-=-=\n");
         pedidoStr.append("Código: ").append(getCodigo()).append("\n");
         pedidoStr.append("Situação: ").append(getSituacao().getEstado()).append("\n");
+        pedidoStr.append("Forma de pagamento: ").append(getFormaPagamento().getDescricao()).append("\n");
         pedidoStr.append("Data de efetuação do pedido: ").append(dtf.format(getData())).append("\n");
         pedidoStr.append("Cliente\n");
         pedidoStr.append("\tNome: ").append(cliente.getNome()).append("\n");
@@ -123,6 +128,9 @@ public class Pedido {
         pedidoStr.append("(+) Valor Total: R$ ").append(df.format(getValorTotal())).append("\n");
         pedidoStr.append("(-) Desconto:    R$ ").append(df.format(getDesconto())).append(" (").append(df.format(valorDescontoEmPorcentagem)).append("%)\n");
         pedidoStr.append("(=) Valor Final: R$ ").append(df.format(getValorComDesconto())).append("\n");
+        
+        pedidoStr.append("Informações da nota fiscal\n");
+        pedidoStr.append(getNotaFiscal());
 
         return pedidoStr.toString();
     }
@@ -193,6 +201,10 @@ public class Pedido {
 
     public double getValorComDesconto() {
         return getValorTotal() - getDesconto();
+    }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
     }
 
 }

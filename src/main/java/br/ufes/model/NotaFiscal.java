@@ -1,23 +1,28 @@
 package br.ufes.model;
 
+import java.text.DecimalFormat;
+import java.util.UUID;
+
 public class NotaFiscal {
 
-    private long codigo;
+    private final UUID codigo;
     private double taxaICMS;
     private double valorICMS;
 
-    public NotaFiscal(long codigo, double taxaICMS, double valorICMS) {
-        this.codigo = codigo;
+    public NotaFiscal(double taxaICMS, double valorICMS) {
+        this.codigo = UUID.randomUUID();
         this.taxaICMS = taxaICMS;
         this.valorICMS = valorICMS;
     }
-
-    public long getCodigo() {
-        return codigo;
+    
+    @Override
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return "\tTaxa ICMS: " + df.format(taxaICMS) + "\n\tValor ICMS: " + df.format(valorICMS) + "\n";
     }
 
-    public void setCodigo(long codigo) {
-        this.codigo = codigo;
+    public UUID getCodigo() {
+        return codigo;
     }
 
     public double getTaxaICMS() {
