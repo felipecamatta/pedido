@@ -61,8 +61,24 @@ public class Pedido {
         this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
 
     }
+    
+    public void aplicarDesconto(IPoliticaDeDesconto desconto){
+        if(politicaDeDesconto.contains(desconto)){
+            throw new RuntimeException("Desconto já aplicado!\n");
+        }
+        this.politicaDeDesconto.add(desconto);
+    }
+    
+    private void calcularValorTotal(){
+        this.valorTotal = this.carrinho.getValor();
+        for(IPoliticaDeDesconto desc : politicaDeDesconto){
+            this.desconto += desc.calcularDesconto(this.carrinho);
+        }
+    }
 
     public void concluir() throws Exception {
+        this.calcularValorTotal();
+        
         validarPedidoParaConcluir();
         setSituacao(SituacaoPedido.PAGO);
         removerProdutosDoPedidoDoEstoque();
@@ -74,6 +90,7 @@ public class Pedido {
     }
 
     public void cancelar() {
+        this.calcularValorTotal();
         validarPedidoParaCancelar();
         setSituacao(SituacaoPedido.CANCELADO);
     }
@@ -103,6 +120,7 @@ public class Pedido {
 
     @Override
     public String toString() {
+        this.calcularValorTotal();
         StringBuilder pedidoStr = new StringBuilder();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -200,6 +218,7 @@ public class Pedido {
     }
 
     public double getValorComDesconto() {
+        this.calcularValorTotal();
         return getValorTotal() - getDesconto();
     }
 
