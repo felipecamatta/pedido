@@ -46,6 +46,20 @@ public class Pedido {
         this.enderecoDestino = this.cliente.getEndereco();
         this.formaPagamento = formaPagamento;
     }
+    
+    public Pedido(double valorTotal,
+            CarrinhoDeCompra carrinho) {
+        
+        this.codigo = UUID.randomUUID();
+        this.data = LocalDate.now();
+        this.valorTotal = valorTotal;
+        this.dataValidade = data.plusDays(5);
+        this.carrinho = carrinho;
+        this.situacao = SituacaoPedido.PENDENTE;
+        this.cliente = carrinho.getCliente();
+        this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
+
+    }
 
     public void concluir() {
         // TODO: Gerar nota fiscal, quando gerar, pegar o ICMS e calcular sua taxa
