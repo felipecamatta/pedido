@@ -7,10 +7,10 @@ import java.io.IOException;
 
 public abstract class ICMSUtil {
 
-    private static int tabela[][];
+    private static double tabela[][];
 
     public static void lerArquivoICMS() throws Exception {
-        int tabelaAux[][] = new int[27][27];
+        double tabelaAux[][] = new double[27][27];
         int i = 0;
         try {
             FileReader arq = new FileReader("ICMS.txt");
@@ -22,7 +22,7 @@ public abstract class ICMSUtil {
                     throw new RuntimeException("Arquivo inválido");
                 }
                 for (int j = 0; j < 27; j++) {
-                    int valor = Integer.parseInt(valores[j]);
+                    double valor = Double.parseDouble(valores[j]);
                     tabelaAux[i][j] = valor;
                 }
                 linha = lerArq.readLine();
@@ -40,7 +40,7 @@ public abstract class ICMSUtil {
         }
     }
 
-    public static int consultarTaxa(Endereco enderecoOrigem, Endereco enderecoDestino) throws Exception {
+    public static double consultarTaxa(Endereco enderecoOrigem, Endereco enderecoDestino) throws Exception {
         return tabela[enderecoOrigem.getUf().getCodigo()][enderecoDestino.getUf().getCodigo()];
     }
 }
