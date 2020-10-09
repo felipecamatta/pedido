@@ -22,7 +22,7 @@ public final class Item {
     }
 
     private void calculaValorItem() {
-        this.valorItem = (valorUnitario * quantidade) * (1-this.produto.getTipoProduto().getPercDesconto());
+        this.valorItem = valorUnitario * quantidade;
     }
 
     public double getValorUnitario() {
@@ -45,6 +45,10 @@ public final class Item {
     public void setQuantidade(double quantidade) {
         if (quantidade < 0) {
             throw new RuntimeException("Quantidade inválida! Somente valores positivos");
+        }else if (!produto.estoqueDisponivel(quantidade)) {
+            throw new RuntimeException("Estoque indisponível para atender a quantidade solicitada (" + quantidade
+                    + ") para o produto " + produto.getNome()
+                    + ", restam " + produto.getQuantidade() + " em estoque.");
         }
         this.quantidade = quantidade;
     }
