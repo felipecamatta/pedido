@@ -1,9 +1,9 @@
 package br.ufes.interfaces;
 
-import br.ufes.model.Pedido;
+import br.ufes.model.CarrinhoDeCompra;
 
 public interface IPoliticaDeDesconto {
 
-    public double calcularDesconto(Pedido pedido);
+    public double calcularDesconto(CarrinhoDeCompra carrinho);
 
 }

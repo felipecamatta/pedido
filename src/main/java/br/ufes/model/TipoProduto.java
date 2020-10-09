@@ -2,23 +2,23 @@ package br.ufes.model;
 
 public class TipoProduto {
 
-    public double desconto = 0.0;
+    public double percDesconto = 0.0;
     public String tipo;
 
-    public TipoProduto(double percenutalDesconto, String tipo) {
-        this.setDesconto(desconto);
+    public TipoProduto(double percDesconto, String tipo) {
+        this.setPercDesconto(percDesconto);
         this.tipo = tipo;
     }
 
-    public double getDesconto() {
-        return desconto;
+    public double getPercDesconto() {
+        return percDesconto;
     }
 
-    public void setDesconto(double percDesconto) {
+    public void setPercDesconto(double percDesconto) {
         if (percDesconto >= 1) {
             throw new RuntimeException("Informe um valor de desconto válido");
         }
-        this.desconto = percDesconto;
+        this.percDesconto = percDesconto;
     }
 
     public String getTipo() {
