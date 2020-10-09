@@ -1,9 +1,7 @@
 package br.ufes.enumeracoes;
 
 public enum SituacaoPedido {
-
-    PAGO("PAGO"), PENDENTE("PENDENTE"), CANCELADO("CANCELADO"),
-    VENCIDO("VENCIDO");
+    PAGO("PAGO"), PENDENTE("PENDENTE"), CANCELADO("CANCELADO"), VENCIDO("VENCIDO");
 
     private final String estado;
 
@@ -14,5 +12,4 @@ public enum SituacaoPedido {
     public String getEstado() {
         return this.estado;
     }
-
 }

@@ -12,23 +12,32 @@ import java.util.UUID;
 
 public class Pedido {
 
-    private final UUID codigo;
+    private UUID codigo;
     private LocalDate data;
     private double desconto;
     private double valorTotal;
     private LocalDate dataValidade;
     private CarrinhoDeCompra carrinho;
-    private final Cliente cliente;
+    private Cliente cliente;
+    private Endereco enderecoOrigem;
+    private Endereco enderecoDestino;
     private NotaFiscal notaFiscal;
     private List<IPoliticaDeDesconto> politicaDeDesconto;
-    private final IFormaPagamento formaPagamento;
     private SituacaoPedido situacao;
+    private FormaPagamento formaPagamento;
 
-    public Pedido(CarrinhoDeCompra carrinho, IFormaPagamento formaPagamento) {
+    public Pedido(
+            LocalDate data,
+            double valorTotal,
+            LocalDate dataValidade,
+            CarrinhoDeCompra carrinho,
+            Endereco enderecoOrigem,
+            FormaPagamento formaPagamento
+    ) {
         this.codigo = UUID.randomUUID();
-        this.data = LocalDate.now();
-        this.valorTotal = carrinho.getValor();
-        this.dataValidade = this.data.plusDays(5);
+        this.data = data;
+        this.valorTotal = valorTotal;
+        this.dataValidade = dataValidade;
         this.carrinho = carrinho;
         this.situacao = SituacaoPedido.PENDENTE;
         this.cliente = carrinho.getCliente();
@@ -86,6 +95,36 @@ public class Pedido {
         getCarrinho().getItens().forEach(itemPedido -> {
             itemPedido.getProduto().getEstoque().diminuirQuantidade(itemPedido.getQuantidade());
         });
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder pedidoStr = new StringBuilder();
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        double valorDescontoEmPorcentagem = (1 - (getValorComDesconto() / getValorTotal()));
+
+        pedidoStr.append("=-=-=-=-=-=-=-=-=-=-= Informações do pedido =-=-=-=-=-=-=-=-=-=-=\n");
+        pedidoStr.append("Código: ").append(getCodigo()).append("\n");
+        pedidoStr.append("Situação: ").append(getSituacao().getEstado()).append("\n");
+        pedidoStr.append("Data de efetuação do pedido: ").append(dtf.format(getData())).append("\n");
+        pedidoStr.append("Cliente\n");
+        pedidoStr.append("\tNome: ").append(cliente.getNome()).append("\n");
+        pedidoStr.append("\tCPF/CNPJ: ").append(cliente.getCNPJOuCPF()).append("\n");
+        pedidoStr.append("Itens do pedido\n");
+
+        for (Item item : getCarrinho().getItens()) {
+            pedidoStr.append("\t").append(item.getProduto().getNome()).append("\n");
+            pedidoStr.append("\t\t").append(item.getQuantidade()).append(" x  R$ ").append(df.format(item.getValorUnitario())).append(" =  R$ ").append(df.format(item.getValorItem())).append("\n");
+        }
+
+        pedidoStr.append("(+) Valor Total: R$ ").append(df.format(getValorTotal())).append("\n");
+        pedidoStr.append("(-) Desconto:    R$ ").append(df.format(getDesconto())).append(" (").append(df.format(valorDescontoEmPorcentagem)).append("%)\n");
+        pedidoStr.append("(=) Valor Final: R$ ").append(df.format(getValorComDesconto())).append("\n");
+
+        return pedidoStr.toString();
     }
 
     public UUID getCodigo() {
@@ -154,36 +193,6 @@ public class Pedido {
 
     public double getValorComDesconto() {
         return getValorTotal() - getDesconto();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder pedidoStr = new StringBuilder();
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        double valorDescontoEmPorcentagem = (1 - (getValorComDesconto() / getValorTotal()));
-
-        pedidoStr.append("=-=-=-=-=-=-=-=-=-=-= Informações do pedido =-=-=-=-=-=-=-=-=-=-=\n");
-        pedidoStr.append("Código: ").append(getCodigo()).append("\n");
-        pedidoStr.append("Situação: ").append(getSituacao().getEstado()).append("\n");
-        pedidoStr.append("Data de efetuação do pedido: ").append(dtf.format(getData())).append("\n");
-        pedidoStr.append("Cliente\n");
-        pedidoStr.append("\tNome: ").append(cliente.getNome()).append("\n");
-        pedidoStr.append("\tCPF/CNPJ: ").append(cliente.getCNPJOuCPF()).append("\n");
-        pedidoStr.append("Itens do pedido\n");
-
-        for (Item item : getCarrinho().getItens()) {
-            pedidoStr.append("\t").append(item.getProduto().getNome()).append("\n");
-            pedidoStr.append("\t\t").append(item.getQuantidade()).append(" x  R$ ").append(df.format(item.getValorUnitario())).append(" =  R$ ").append(df.format(item.getValorItem())).append("\n");
-        }
-
-        pedidoStr.append("(+) Valor Total: R$ ").append(df.format(getValorTotal())).append("\n");
-        pedidoStr.append("(-) Desconto:    R$ ").append(df.format(getDesconto())).append(" (").append(df.format(valorDescontoEmPorcentagem)).append("%)\n");
-        pedidoStr.append("(=) Valor Final: R$ ").append(df.format(getValorComDesconto())).append("\n");
-
-        return pedidoStr.toString();
     }
 
 }

@@ -15,7 +15,8 @@ public class Estoque {
         return getQuantidade();
     }
 
-    public void diminuirQuantidade(double quantidade) {
+    public double diminuirQuantidade(double quantidade) {
+        // TODO: Verificar o que fazer quando a quantidade para diminuir for maior que a disponível
         if (quantidade > 0) {
             double quantidadeAtual = getQuantidade();
             if (quantidade > quantidadeAtual) {
@@ -23,9 +24,9 @@ public class Estoque {
             } else {
                 setQuantidade(quantidadeAtual - quantidade);
             }
-        } else {
-            throw new RuntimeException("Quantidade indisponível no estoque.");
         }
+
+        return getQuantidade();
     }
 
     public double getQuantidade() {
