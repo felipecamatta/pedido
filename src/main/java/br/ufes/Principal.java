@@ -1,11 +1,16 @@
 package br.ufes;
 
+import br.ufes.enumeracoes.FormaPagamento;
+import br.ufes.enumeracoes.UF;
 import br.ufes.interfaces.implementacao.GerarArquivoJSON;
 import br.ufes.model.Cliente;
 import br.ufes.model.CarrinhoDeCompra;
 import br.ufes.interfaces.implementacao.GerarArquivoPDF;
+import br.ufes.model.Endereco;
+import br.ufes.model.Pedido;
 import br.ufes.model.Produto;
 import br.ufes.model.TipoProduto;
+import br.ufes.util.ICMSUtil;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +22,8 @@ public class Principal {
 
         try {
 
-            /*CarrinhoDeCompra pedido1 = new CarrinhoDeCompra(cliente1,
-                    produto1, 5,
-                    LocalDate.now()
-            );
-
-            pedido1.addItem(new Produto("Folha Papel A4", 0.05, 10, new TipoProduto(0.1, "Folha")), 10);
-
-            System.out.println(pedido1);*/
+            ICMSUtil.lerArquivoICMS();
+            
             Principal p = new Principal();
             p.menu();
 
@@ -42,6 +41,9 @@ public class Principal {
         GerarArquivoJSON emitir_json = new GerarArquivoJSON();
         
         Cliente cliente1 = new Cliente("Fulano", "123.456.789-01"); //gera um cliente
+        Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG );
+        cliente1.setEndereco(enderecoCliente);
+        Endereco enderecoLoja = new Endereco("Rua Dr. Wanderley", "Prédio", "29500-000", "Centro", "Alegre", 20, UF.ES);
 
         List<Produto> produtos = new ArrayList<>(); //Lista de produtos
         /*
@@ -52,7 +54,8 @@ public class Principal {
         produtos.add(new Produto("Faber Castel", 3.50, 8, new TipoProduto(0.05, "borracha")));
         produtos.add(new Produto("Tilibra", 3.50, 8, new TipoProduto(0.05, "lápis")));
 
-        int op = -1, op1 = op;
+        int op = -1, op1 = op, formaPagamento = -1;
+        FormaPagamento formaPagamentoEscolhida = null;
         while (op!=0) {
             System.out.println("Digite 1 para fazer um pedido\n"
                     + "Digite 0 para sair:\n");
@@ -85,8 +88,36 @@ public class Principal {
                             if (op1 > produtos.size()) {
                                 System.out.println("Produto não encontrado!\n");
                             } else if (op1 == 0) {
-                                emitir_pdf.gerarArquivo(carrinho, "Nota Fiscal");
-                                emitir_json.gerarArquivo(carrinho, "Nota Fiscal");
+                                while (formaPagamento == -1) {
+                                    System.out.println("Escolha a forma de pagamento: ");
+                                    System.out.println("1 - Boleto");
+                                    System.out.println("2 - Cartão de Crédito");
+                                    System.out.println("3 - Cartão de Débito");
+                                    
+                                    formaPagamento = sc.nextInt();
+                                    
+                                    switch (formaPagamento) {
+                                        case 1:
+                                            formaPagamentoEscolhida = FormaPagamento.BOLETO;
+                                            break;
+                                        case 2: 
+                                            formaPagamentoEscolhida = FormaPagamento.CARTAO_CREDITO;
+                                            break;
+                                        case 3:
+                                            formaPagamentoEscolhida = FormaPagamento.CARTAO_DEBITO;
+                                            break;
+                                        default:
+                                            formaPagamento = -1;
+                                            break;
+                                    }
+                                }
+                                
+                                Pedido pedido = carrinho.fechar(enderecoLoja, formaPagamentoEscolhida);
+                                
+                                pedido.concluir();
+                                
+                                emitir_pdf.gerarArquivo(pedido, "Nota Fiscal");
+                                emitir_json.gerarArquivo(pedido, "Nota Fiscal");
                                 
                                 break; //confirma a compra
                             } else {
