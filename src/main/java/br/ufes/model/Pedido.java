@@ -1,7 +1,7 @@
 package br.ufes.model;
 
+import br.ufes.enumeracoes.FormaPagamento;
 import br.ufes.enumeracoes.SituacaoPedido;
-import br.ufes.interfaces.IFormaPagamento;
 import br.ufes.interfaces.IPoliticaDeDesconto;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -33,22 +33,35 @@ public class Pedido {
         this.situacao = SituacaoPedido.PENDENTE;
         this.cliente = carrinho.getCliente();
         this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
+        this.enderecoOrigem = enderecoOrigem;
+        this.enderecoDestino = this.cliente.getEndereco();
         this.formaPagamento = formaPagamento;
+    }
+    
+    public Pedido(double valorTotal,
+            CarrinhoDeCompra carrinho) {
+        
+        this.codigo = UUID.randomUUID();
+        this.data = LocalDate.now();
+        this.valorTotal = valorTotal;
+        this.dataValidade = data.plusDays(5);
+        this.carrinho = carrinho;
+        this.situacao = SituacaoPedido.PENDENTE;
+        this.cliente = carrinho.getCliente();
+        this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
+
     }
 
     public void concluir() {
+        // TODO: Gerar nota fiscal, quando gerar, pegar o ICMS e calcular sua taxa
         validarPedidoParaConcluir();
-
         setSituacao(SituacaoPedido.PAGO);
-
         removerProdutosDoPedidoDoEstoque();
-
         getCliente().incrementarPontuacao(getValorComDesconto() * 0.02);
     }
 
     public void cancelar() {
         validarPedidoParaCancelar();
-
         setSituacao(SituacaoPedido.CANCELADO);
     }
 
