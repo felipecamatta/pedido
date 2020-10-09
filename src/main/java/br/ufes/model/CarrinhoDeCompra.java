@@ -12,7 +12,7 @@ public final class CarrinhoDeCompra {
 
     private Cliente cliente;
     private double valor;
-    private final double desconto = 0.05;
+    private final double desconto = 0;
     private double valorDesconto;
     private double valorAPagar;
     private List<Item> itens;
@@ -85,7 +85,7 @@ public final class CarrinhoDeCompra {
         for (Item item : itens) {// 
             valor += item.getValorItem();
         }
-        aplicarDesconto(); // AQ APLICA O DESC
+        //aplicarDesconto(); // AQ APLICA O DESC
     }
 
     public double getValorDesconto() {

@@ -60,8 +60,17 @@ public class Pedido {
         this.politicaDeDesconto = new ArrayList<IPoliticaDeDesconto>();
 
     }
+    
+    public void aplicarDesconto(IPoliticaDeDesconto desconto){
+        if(politicaDeDesconto.contains(desconto)){
+            throw new RuntimeException("Desconto já aplicado!\n");
+        }
+        this.politicaDeDesconto.add(desconto);
+    }
 
     public void concluir() {
+        this.calcularValorTotal();
+        
         // TODO: Gerar nota fiscal, quando gerar, pegar o ICMS e calcular sua taxa
         validarPedidoParaConcluir();
         setSituacao(SituacaoPedido.PAGO);
@@ -70,6 +79,7 @@ public class Pedido {
     }
 
     public void cancelar() {
+        this.calcularValorTotal();
         validarPedidoParaCancelar();
         setSituacao(SituacaoPedido.CANCELADO);
     }
@@ -96,9 +106,18 @@ public class Pedido {
             itemPedido.getProduto().getEstoque().diminuirQuantidade(itemPedido.getQuantidade());
         });
     }
+    
+    private void calcularValorTotal(){
+        this.valorTotal = this.carrinho.getValor();
+        for(IPoliticaDeDesconto desc : politicaDeDesconto){
+            this.desconto += desc.calcularDesconto(this.carrinho);
+        }
+    }
 
     @Override
     public String toString() {
+        this.calcularValorTotal();
+        
         StringBuilder pedidoStr = new StringBuilder();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -192,6 +211,7 @@ public class Pedido {
     }
 
     public double getValorComDesconto() {
+        this.calcularValorTotal();
         return getValorTotal() - getDesconto();
     }
 
