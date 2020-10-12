@@ -12,8 +12,6 @@ import br.ufes.model.Pedido;
 import br.ufes.model.Produto;
 import br.ufes.model.TipoProduto;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -23,9 +21,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.rules.ExpectedException;
 
-public class PedidoTeste {
+public class PedidoTest {
 
-    public PedidoTeste() {
+    public PedidoTest() {
     }
 
     @BeforeAll
@@ -96,7 +94,7 @@ public class PedidoTeste {
     
     //Testes para validação do pedido
     @Test
-    public void CT03(){
+    public void CT03() throws Exception{
         Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
         Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG);
         cliente1.setEndereco(enderecoCliente);
@@ -114,7 +112,7 @@ public class PedidoTeste {
     }
     
     @Test
-    public void CT04(){
+    public void CT04() throws Exception{
         Cliente cliente1 = new Cliente("Fulano", "123.456.789-01");
         Endereco enderecoCliente = new Endereco("Rua Maria Deta Lond", "Casa", "30622-490", "Bonsucesso (Barreiro)", "Belo Horizonte", 247, UF.MG);
         cliente1.setEndereco(enderecoCliente);

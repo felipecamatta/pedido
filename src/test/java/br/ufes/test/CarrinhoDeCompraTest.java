@@ -19,9 +19,9 @@ import org.junit.jupiter.api.BeforeAll;
 
 import org.junit.rules.ExpectedException;
 
-public class CarrinhoDeCompraTeste {
+public class CarrinhoDeCompraTest {
 
-    public CarrinhoDeCompraTeste() {
+    public CarrinhoDeCompraTest() {
     }
 
     @BeforeAll
