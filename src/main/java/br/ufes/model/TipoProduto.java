@@ -23,8 +23,8 @@ public class TipoProduto {
     }
 
     public void setDesconto(double desconto) {
-        if (desconto >= 1) {
-            throw new RuntimeException("Informe um valor de desconto válido");
+        if (desconto >= 1 || desconto < 0) {
+            throw new RuntimeException("Informe um valor de desconto válido.");
         }
         this.desconto = desconto;
     }

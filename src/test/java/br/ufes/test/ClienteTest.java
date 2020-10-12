@@ -33,67 +33,56 @@ public class ClienteTest {
 
     @Test // TESTANDO "toString"
     public void CT001() {
-        String nome = "Lucas", CPF = "123.456.789-13";
-        Cliente cliente = new Cliente(nome, CPF);
+        Cliente cliente = new Cliente("Lucas", "123.456.789-13");
 
-        //toString ESPERADO
         String toStringEsperado = "Cliente: Lucas, CNPJ/CPF = 123.456.789-13";
 
-        //VERIFICANDO A SAÍDA
         assertEquals(cliente.toString(), toStringEsperado);
     }
 
-    //TESTANDO "incrementarPontuacao"
-    //REVISAR
-    @Test
+    @Test // TESTANDO "incrementarPontuacao"
     public void CT002() {
-        String nome = "Lucas", CPF = "123.456.789-13";
-        Cliente cliente = new Cliente(nome, CPF);
-        //cliente.setPontuacao(0);
+        Cliente cliente = new Cliente("Lucas", "123.456.789-13");
         double pontuacao = 20.0;
         cliente.incrementarPontuacao(pontuacao);
 
-        //VERIFICANDO A SAIDA
-        assertEquals(cliente.getPontuacao(), pontuacao, 000.1);
+        assertEquals(cliente.getPontuacao(), pontuacao, 0.1);
     }
-    
-    // TESTANDO "diminuirPontuacao" para pontuação do cliente superior à pontuação a ser diminuída
-    @Test
+
+    @Test // TESTANDO "diminuirPontuacao" para pontuação do cliente superior à pontuação a ser diminuída
     public void CT003() {
         Cliente cliente = new Cliente("Lucas", "123.456.789-13", null, LocalDate.of(1990, Month.MARCH, 27), 15.0);
-        
+
         double pontuacaoDiminuir = 5.0;
         double pontuacaoEsperada = 10.0;
-        
+
         cliente.diminuirPontuacao(pontuacaoDiminuir);
-        
+
         assertEquals(pontuacaoEsperada, cliente.getPontuacao(), 0.01);
     }
-    
-    // TESTANDO "diminuirPontuacao" para pontuação do cliente igual à pontuação a ser diminuída
-    @Test
+
+    @Test // TESTANDO "diminuirPontuacao" para pontuação do cliente igual à pontuação a ser diminuída
     public void CT004() {
         Cliente cliente = new Cliente("Lucas", "123.456.789-13", null, LocalDate.of(1990, Month.MARCH, 27), 15.0);
-        
+
         double pontuacaoDiminuir = 15.0;
         double pontuacaoEsperada = 0.0;
-        
+
         cliente.diminuirPontuacao(pontuacaoDiminuir);
-        
+
         assertEquals(pontuacaoEsperada, cliente.getPontuacao(), 0.01);
     }
-    
-    // TESTANDO "diminuirPontuacao" para pontuação do cliente inferior à pontuação a ser diminuída
-    @Test
+
+    @Test // TESTANDO "diminuirPontuacao" para pontuação do cliente inferior à pontuação a ser diminuída
     public void CT005() {
         Cliente cliente = new Cliente("Lucas", "123.456.789-13", null, LocalDate.of(1990, Month.MARCH, 27), 15.0);
-        
+
         double pontuacaoDiminuir = 20.0;
         double pontuacaoEsperada = 0.0;
-        
+
         cliente.diminuirPontuacao(pontuacaoDiminuir);
-        
+
         assertEquals(pontuacaoEsperada, cliente.getPontuacao(), 0.01);
     }
-    
+
 }

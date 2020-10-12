@@ -21,7 +21,7 @@ public final class Cliente {
     public Cliente(String nome, String codigo) {
         this.nome = nome;
         this.CNPJOuCPF = codigo;
-    }    
+    }
 
     public double incrementarPontuacao(double valorParaIncrementar) {
         if (valorParaIncrementar > 0) {
@@ -30,11 +30,11 @@ public final class Cliente {
 
         return pontuacao;
     }
-    
+
     public double diminuirPontuacao(double valorParaDiminuir) {
         if (valorParaDiminuir < pontuacao) {
             pontuacao -= valorParaDiminuir;
-        }else{
+        } else {
             pontuacao = 0;
         }
 
@@ -60,11 +60,11 @@ public final class Cliente {
     public LocalDate getDataNascimento() {
         return dataNascimento;
     }
-    
+
     public double getPontuacao() {
         return pontuacao;
     }
-    
+
     @Override
     public String toString() {
         return "Cliente: " + nome + ", CNPJ/CPF = " + CNPJOuCPF;

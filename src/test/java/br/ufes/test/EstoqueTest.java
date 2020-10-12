@@ -34,13 +34,10 @@ public class EstoqueTest {
         double quantidadeEsperada = 300.0;
         Estoque estoque = new Estoque(quantidadeEsperada);
 
-        //CONFERINDO SAIDA
         assertEquals(estoque.getQuantidade(), quantidadeEsperada, 0000.1);
-
     }
 
-    //TESTANDO FUNÇÃO "aumentarQuantidade"
-    @Test
+    @Test // TESTANDO FUNÇÃO "aumentarQuantidade"
     public void CT002() {
         double quantidadeInicio = 300.0;
         double quantidadeAum = 200.0;
@@ -49,12 +46,10 @@ public class EstoqueTest {
 
         double quantidadeEsperada = 500.0;
 
-        //CONFERINDO SAIDA
         assertEquals(estoque.getQuantidade(), quantidadeEsperada, 0000.1);
     }
 
-    //TESTANDO FUNÇÃO "diminuirQuantidade"
-    @Test
+    @Test //TESTANDO FUNÇÃO "diminuirQuantidade"
     public void CT003() {
         double quantidadeInicio = 300.0;
         double quantidadeDim = 200.0;
@@ -62,8 +57,7 @@ public class EstoqueTest {
         estoque.diminuirQuantidade(quantidadeDim);
 
         double quantidadeEsperada = 100.0;
-
-        //CONFERINDO SAIDA
         assertEquals(estoque.getQuantidade(), quantidadeEsperada, 0000.1);
     }
+
 }
