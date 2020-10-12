@@ -1,6 +1,8 @@
 package br.ufes.test;
 
 import br.ufes.model.Cliente;
+import java.time.LocalDate;
+import java.time.Month;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -54,4 +56,44 @@ public class ClienteTest {
         //VERIFICANDO A SAIDA
         assertEquals(cliente.getPontuacao(), pontuacao, 000.1);
     }
+    
+    // TESTANDO "diminuirPontuacao" para pontuação do cliente superior à pontuação a ser diminuída
+    @Test
+    public void CT003() {
+        Cliente cliente = new Cliente("Lucas", "123.456.789-13", null, LocalDate.of(1990, Month.MARCH, 27), 15.0);
+        
+        double pontuacaoDiminuir = 5.0;
+        double pontuacaoEsperada = 10.0;
+        
+        cliente.diminuirPontuacao(pontuacaoDiminuir);
+        
+        assertEquals(pontuacaoEsperada, cliente.getPontuacao(), 0.01);
+    }
+    
+    // TESTANDO "diminuirPontuacao" para pontuação do cliente igual à pontuação a ser diminuída
+    @Test
+    public void CT004() {
+        Cliente cliente = new Cliente("Lucas", "123.456.789-13", null, LocalDate.of(1990, Month.MARCH, 27), 15.0);
+        
+        double pontuacaoDiminuir = 15.0;
+        double pontuacaoEsperada = 0.0;
+        
+        cliente.diminuirPontuacao(pontuacaoDiminuir);
+        
+        assertEquals(pontuacaoEsperada, cliente.getPontuacao(), 0.01);
+    }
+    
+    // TESTANDO "diminuirPontuacao" para pontuação do cliente inferior à pontuação a ser diminuída
+    @Test
+    public void CT005() {
+        Cliente cliente = new Cliente("Lucas", "123.456.789-13", null, LocalDate.of(1990, Month.MARCH, 27), 15.0);
+        
+        double pontuacaoDiminuir = 20.0;
+        double pontuacaoEsperada = 0.0;
+        
+        cliente.diminuirPontuacao(pontuacaoDiminuir);
+        
+        assertEquals(pontuacaoEsperada, cliente.getPontuacao(), 0.01);
+    }
+    
 }

@@ -10,7 +10,7 @@ public final class Cliente {
     private LocalDate dataNascimento;
     private double pontuacao;
 
-    public Cliente(String nome, String CNPJOuCPF, Endereco endereco, LocalDate dataNascimento, byte pontuacao) {
+    public Cliente(String nome, String CNPJOuCPF, Endereco endereco, LocalDate dataNascimento, double pontuacao) {
         this.nome = nome;
         this.CNPJOuCPF = CNPJOuCPF;
         this.endereco = endereco;
