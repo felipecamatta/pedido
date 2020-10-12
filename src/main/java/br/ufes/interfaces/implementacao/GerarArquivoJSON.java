@@ -29,7 +29,6 @@ public class GerarArquivoJSON implements IGeradorArquivo {
         gson.toJson(src, writer);
 
         writer.close();
-
     }
 
 }

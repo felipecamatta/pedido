@@ -7,7 +7,6 @@ public class DescontoPorClienteAniversariante implements IPoliticaDeDesconto {
 
     @Override
     public double calcularDesconto(Pedido pedido) {
-
         try {
             if (pedido.getCarrinho().getCliente().getDataNascimento().withYear(pedido.getData().getYear()).getDayOfYear() == pedido.getData().getDayOfYear()) {
                 return (pedido.getValorTotal() - pedido.getDesconto()) * 0.05;
