@@ -8,19 +8,37 @@ public final class Cliente {
     private final String CNPJOuCPF;
     private Endereco endereco;
     private LocalDate dataNascimento;
-    private byte pontuacao;
+    private double pontuacao;
 
-    public Cliente(String nome, String CNPJOuCPF, Endereco endereco, LocalDate dataNascimento, byte pontuacao) {
+    public Cliente(String nome, String CNPJOuCPF, Endereco endereco, LocalDate dataNascimento, double pontuacao) {
         this.nome = nome;
         this.CNPJOuCPF = CNPJOuCPF;
         this.endereco = endereco;
         this.dataNascimento = dataNascimento;
         this.pontuacao = pontuacao;
     }
-    
+
     public Cliente(String nome, String codigo) {
         this.nome = nome;
         this.CNPJOuCPF = codigo;
+    }
+
+    public double incrementarPontuacao(double valorParaIncrementar) {
+        if (valorParaIncrementar > 0) {
+            pontuacao += valorParaIncrementar;
+        }
+
+        return pontuacao;
+    }
+
+    public double diminuirPontuacao(double valorParaDiminuir) {
+        if (valorParaDiminuir < pontuacao) {
+            pontuacao -= valorParaDiminuir;
+        } else {
+            pontuacao = 0;
+        }
+
+        return pontuacao;
     }
 
     public String getNome() {
@@ -43,18 +61,10 @@ public final class Cliente {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public byte getPontuacao() {
+    public double getPontuacao() {
         return pontuacao;
     }
 
-    public void setPontuacao(byte pontuacao) {
-        this.pontuacao = pontuacao;
-    }
-    
     @Override
     public String toString() {
         return "Cliente: " + nome + ", CNPJ/CPF = " + CNPJOuCPF;

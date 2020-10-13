@@ -1,32 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufes.model;
 
-/**
- *
- * @author gabriel
- */
+import br.ufes.enumeracoes.UF;
+
 public class Endereco {
-    
+
     private String logradouro;
     private String complemento;
     private String cep;
     private String bairro;
     private String cidade;
     private int numero;
+    private UF uf;
 
-    public Endereco(String logradouro, String complemento, String cep, String bairro, String cidade, int numero) {
+    public Endereco(String logradouro, String complemento, String cep, String bairro, String cidade, int numero, UF uf) {
         this.logradouro = logradouro;
         this.complemento = complemento;
         this.cep = cep;
         this.bairro = bairro;
         this.cidade = cidade;
         this.numero = numero;
+        this.uf = uf;
     }
-    
 
     public String getLogradouro() {
         return logradouro;
@@ -75,5 +69,13 @@ public class Endereco {
     public void setNumero(int numero) {
         this.numero = numero;
     }
-    
+
+    public UF getUf() {
+        return uf;
+    }
+
+    public void setUf(UF uf) {
+        this.uf = uf;
+    }
+
 }
